@@ -1,0 +1,33 @@
+.menuItem {
+  display: flex;
+  align-items: center;
+  padding: 6.5px;
+  border-radius: 4px;
+  color: #333;
+  text-decoration: none;
+  transition: all 0.3s;
+  margin-bottom: 4px;
+}
+
+.menuItem:hover {
+  background-color: #ee86524f;
+}
+
+.ativo  {
+  background-color: #EE8552; /* Cor de fundo para o item ativo */
+  font-weight: bold; /* Destaca o texto do item ativo */
+  color: white; /* Cor do texto para o item ativo */
+  text-decoration: underline;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+}
+
+.label {
+  font-size: 2.2vh;
+  font-weight: 700;
+}

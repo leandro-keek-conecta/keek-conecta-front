@@ -1,0 +1,11 @@
+.alertContainer {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
+.alert {
+  border-radius: 8px !important;
+  display: flex;
+  align-items: center;
+}

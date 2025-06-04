@@ -1,0 +1,234 @@
+import { useState } from "react";
+import { styled } from "@mui/material/styles";
+import Logo from "../assets/logo.png";
+import {
+  AppBar,
+  Box,
+  Drawer,
+  IconButton,
+  Toolbar,
+  Typography,
+} from "@mui/material";
+import { ChevronLeft, ChevronRight, Menu } from "@mui/icons-material";
+import { Sidebar } from "./sidebar/Sidebar";
+
+// Interface para propriedades do componente Layout
+interface PropriedadesLayout {
+  children: React.ReactNode;
+  titulo?: string;
+  mostrarSidebar?: boolean; // Nova propriedade para controlar a exibição da sidebar
+}
+
+// Estilo para o cabeçalho
+const CabecalhoEstilizado = styled(AppBar)(({ theme }) => ({
+  backgroundColor: "white",
+  color: "#333333",
+  boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+  zIndex: theme.zIndex.drawer + 1,
+}));
+
+// Estilo para a barra lateral
+const BarraLateralEstilizada = styled(Box)(({ theme }) => ({
+  backgroundColor: "#ffffff", // Verde similar ao keekInteligencia
+  color: "white",
+  height: "100%",
+}));
+
+export function Layout({
+  children,
+  titulo,
+  mostrarSidebar = true,
+}: PropriedadesLayout) {
+  const [barraLateralAberta, setBarraLateralAberta] = useState(true);
+  const [menuMobileAberto, setMenuMobileAberto] = useState(false);
+
+  // Se não deve mostrar a sidebar, renderiza apenas o conteúdo principal
+  if (!mostrarSidebar) {
+    return (
+      <Box sx={{ display: "flex", minHeight: "100vh", bgcolor: "#f5f5f5" }}>
+        {children}
+      </Box>
+    );
+  }
+
+  return (
+    <Box sx={{ display: "flex", minHeight: "100vh", bgcolor: "#f5f5f5" }}>
+      {/* Barra lateral para desktop */}
+      <Box
+        component="aside"
+        sx={{
+          position: "fixed",
+          left: 0,
+          top: 0,
+          height: "100vh",
+          overflowY: "hidden", // Scroll inicialmente escondido
+          overflowX: "hidden",
+          width: barraLateralAberta ? "18vw" : "50px",
+          bgcolor: "#ffffff",
+          transition: "all 0.3s ease-in-out",
+          zIndex: 20,
+          display: { xs: "none", md: "block" },
+          "&:hover": {
+            overflowY: "auto", // Mostra scroll ao passar o mouse
+          },
+          // Estilização personalizada para a barra de rolagem
+          "&::-webkit-scrollbar": {
+            width: "6px",
+          },
+          "&::-webkit-scrollbar-track": {
+            background: "#f1f1f1",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            background: "#888",
+            borderRadius: "3px",
+          },
+          "&::-webkit-scrollbar-thumb:hover": {
+            background: "#555",
+          },
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            height: " 7vh",
+            alignItems: "center",
+            backgroundColor: "#1E6F76",
+            justifyContent: barraLateralAberta ? "space-between" : "center",
+            px: 2,
+          }}
+        >
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <img
+              src={Logo}
+              alt="keekInteligencia"
+              style={{ height: "26px", width: "26px", borderRadius: "60px" }}
+            />
+            {barraLateralAberta && (
+              <Typography
+                variant="subtitle1"
+                sx={{
+                  ml: 1.2,
+                  fontWeight: "bold",
+                  color: "white",
+                  backgroundColor: "transparent",
+                }}
+              >
+                Keek Inteligencia
+              </Typography>
+            )}
+          </Box>
+          <IconButton
+            onClick={() => {
+              setBarraLateralAberta((prev) => {
+                const novoEstado = !prev;
+                requestAnimationFrame(() => {
+                  setTimeout(() => {
+                    window.dispatchEvent(new Event("resize"));
+                  }, 50);
+                });
+                return novoEstado;
+              });
+            }}
+            sx={{
+              color: "white",
+              display: { xs: "none", md: "flex" },
+              "&:hover": { bgcolor: "rgba(255, 255, 255, 0.1)" },
+            }}
+          >
+            {barraLateralAberta ? <ChevronLeft /> : <ChevronRight />}
+          </IconButton>
+        </Box>
+        <Sidebar estaAberta={barraLateralAberta} />
+      </Box>
+
+      {/* Drawer para mobile */}
+      <Drawer
+        anchor="left"
+        open={menuMobileAberto}
+        onClose={() => setMenuMobileAberto(false)}
+        sx={{
+          "& .MuiDrawer-paper": {
+            width: "70vw",
+            bgcolor: "#1E6F76",
+          },
+          display: { xs: "block", md: "none" },
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            height: "50px",
+            alignItems: "center",
+            justifyContent: "space-between",
+            px: 2,
+          }}
+        >
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <img
+              src={Logo}
+              alt="keekInteligencia"
+              style={{ height: "32px", width: "32px", borderRadius: "50%" }}
+            />
+            <Typography
+              variant="subtitle1"
+              sx={{ ml: 1, fontWeight: "bold", color: "white" }}
+            >
+              Keek Inteligencia
+            </Typography>
+          </Box>
+          <IconButton
+            onClick={() => setMenuMobileAberto(false)}
+            sx={{ color: "white" }}
+          >
+            <ChevronLeft />
+          </IconButton>
+        </Box>
+        <BarraLateralEstilizada>
+          <Sidebar
+            estaAberta={true}
+            isMobile={true}
+            aoFechar={() => setMenuMobileAberto(false)}
+          />
+        </BarraLateralEstilizada>
+      </Drawer>
+
+      {/* Conteúdo principal */}
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          ml: { xs: 0, md: barraLateralAberta ? "18vw" : "50px" },
+          transition: "all 0.3s ease-in-out",
+        }}
+      >
+        <CabecalhoEstilizado position="relative" sx={{ zIndex: 0, height: "10vh" }}>
+          <Toolbar sx={{ display: "flex", alignItems: "center",  }}>
+            <IconButton
+              edge="start"
+              color="inherit"
+              onClick={() => setMenuMobileAberto(true)}
+              sx={{ display: { xs: "block", md: "none" } }}
+            >
+              <Menu />
+            </IconButton>
+            {titulo && (
+              <Typography variant="h6" component="h1" sx={{ flexGrow: 1, fontSize: "3.2vh" }}>
+                {titulo || "Keek Inteligencia"}
+              </Typography>
+            )}
+          </Toolbar>
+        </CabecalhoEstilizado>
+        <Box
+          sx={{
+            p: { xs: 2, md: 3 },
+            mx: "auto",
+            maxWidth: barraLateralAberta ? "100vw" : "100%",
+            transition: "all 0.3s ease-in-out",
+          }}
+        >
+          {children}
+        </Box>
+      </Box>
+    </Box>
+  );
+}

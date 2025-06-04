@@ -1,0 +1,87 @@
+import { createTheme } from "@mui/material/styles";
+import "@fontsource/lato"; // Importa a fonte Lato
+
+// Tema personalizado para o keekInteligencia
+export const temaPlansan = createTheme({
+  palette: {
+    primary: {
+      main: "#1E6F76", // Verde keekInteligencia
+      light: "#5ba55e",
+      dark: "#EE8552",
+      contrastText: "#ffffff",
+    },
+    secondary: {
+      main: "#f5f5f5", // Cinza claro para o fundo
+      light: "#ffffff",
+      dark: "#e0e0e0",
+      contrastText: "#333333",
+    },
+    background: {
+      default: "#f5f5f5",
+      paper: "#ffffff",
+    },
+    text: {
+      primary: "#333333",
+      secondary: "#666666",
+    },
+  },
+  typography: {
+    fontFamily: "'Lato', 'Roboto', 'Helvetica', 'Arial', sans-serif", // Define Lato como padrão
+    h5: {
+      fontWeight: 600,
+    },
+    h6: {
+      fontWeight: 500,
+    },
+    subtitle1: {
+      fontWeight: 500,
+    },
+    button: {
+      fontWeight: 500,
+      textTransform: "none",
+    },
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 4,
+          textTransform: "none",
+          fontWeight: 500,
+        },
+        containedPrimary: {
+          "&:hover": {
+            backgroundColor: "EE8552",
+          },
+        },
+      },
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          borderRadius: 8,
+          boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          "& .MuiOutlinedInput-root": {
+            borderRadius: 4,
+          },
+        },
+      },
+    },
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          color: "#555555",
+          "&:hover": {
+            backgroundColor: "rgba(0, 0, 0, 0.04)",
+          },
+        },
+      },
+    },
+  },
+});

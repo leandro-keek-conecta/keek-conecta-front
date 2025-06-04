@@ -1,0 +1,70 @@
+.logo {
+  width: 20px;
+  height: auto;
+}
+
+.titleContainer {
+  position: relative;
+  color: white;
+  height: 8vh;
+  gap: 8%;
+  background-color: #1e6f76;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.goBackButton {
+  cursor: pointer;
+}
+
+.sidebarNav {
+  padding: 8px;
+  background-color: white;
+  border-radius: 4px;
+}
+
+.ulStyle {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  color: black;
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  padding: 7.3px 12px;
+  border-radius: 4px;
+  color: #333;
+  text-decoration: none;
+  transition: all 0.3s;
+  margin-bottom: 4px;
+}
+
+.menuItem:hover {
+  background-color: #e6efe8;
+}
+
+.ativo {
+  background-color: #c7d9c7;
+  font-weight: bold;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+}
+
+.label {
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.divider {
+  margin: 16px 8px;
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.1);
+}
