@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 // Páginas
 import Index from "../pages/Index";
 import NotFound from "../pages/NotFound";
-import Apresentacao from "../pages/Apresentacao";
+import Apresentacao from "../pages/home/Apresentacao";
 import Login from "@/pages/login/Login";
 
 const RoutesConfig = () => (

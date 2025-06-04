@@ -59,7 +59,7 @@ export function FormularioCard({
               type="submit"
               variant="contained"
               sx={{
-                bgcolor: "#1E6F76",
+                bgcolor: "#FF7A01",
                 "&:hover": { bgcolor: "EE8552" },
               }}
             >
