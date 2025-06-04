@@ -1,0 +1,123 @@
+@import url("https://fonts.googleapis.com/css?family=Lato:400,700,900&display=swap");
+
+.loginContainer {
+  display: flex;
+  flex: 1;
+  background: linear-gradient(180deg, #230044 0%, #8f2b4d 64.27%, #fc5656 100%);
+  min-height: 100vh; /* ocupa toda a altura da tela */
+  width: 100vw;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.containerLeft {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 60vh; /* igual ao containerRight */
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.containerRight {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 60vh;
+}
+
+.logo {
+  margin-bottom: 2rem;
+}
+
+.titleSubtitle {
+  text-align: left;
+  max-width: 80%;
+}
+
+.aboutButtom {
+  margin-top: 2rem;
+}
+
+.loginForm {
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; /* Corrige o desalinhamento */
+  text-align: center; /* Garante alinhamento do texto */
+  display: inline-flex;
+  padding: 2rem 40px 40px 2rem;
+  flex-direction: column;
+  border-radius: 25px;
+  border: 2px solid #fff;
+
+  background: radial-gradient(
+    107.32% 141.42% at 0% 0%,
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+
+  box-shadow: -5px -5px 250px 0px rgba(255, 255, 255, 0.02) inset;
+  backdrop-filter: blur(21px);
+  color: white;
+}
+
+.titleForm {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  color: #fff;
+
+  text-align: center;
+  font-family: "Lato", sans-serif;
+  font-style: normal;
+  font-weight: 800;
+  line-height: normal;
+  font-size: 4vh !important;
+  width: 100%;
+}
+
+.subtitle {
+  font-family: "Lato", sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  font-size: 2.5vh !important;
+}
+
+@media screen and (max-width: 768px) {
+  .loginContainer {
+    flex-direction: column;
+    padding: 1rem;
+    gap: 4rem;
+  }
+
+  .loginForm {
+    align-items: center;
+    text-align: center;
+    padding: 1.5rem;
+  }
+
+  .titleForm {
+    align-items: center;
+    text-align: center;
+  }
+
+  .containerLeft,
+  .containerRight {
+    width: 100%;
+  }
+
+  .containerRight {
+    margin-bottom: 2rem;
+  }
+
+  .containerRight {
+    width: 100%;
+  }
+}
