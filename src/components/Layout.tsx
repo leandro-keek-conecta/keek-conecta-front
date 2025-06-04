@@ -90,54 +90,35 @@ export function Layout({
         <Box
           sx={{
             display: "flex",
-            height: " 7vh",
             alignItems: "center",
-            backgroundColor: "#1E6F76",
-            justifyContent: barraLateralAberta ? "space-between" : "center",
+            backgroundColor: "#FF7A01",
+            height: "15vh",
             px: 2,
           }}
         >
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <img
-              src={Logo}
-              alt="keekInteligencia"
-              style={{ height: "26px", width: "26px", borderRadius: "60px" }}
-            />
-            {barraLateralAberta && (
+          <img
+            src={Logo}
+            alt="keekInteligencia"
+            style={{ height: "42px", width: "42px", borderRadius: "50%" }}
+          />
+          {barraLateralAberta && (
+            <Box sx={{ ml: 1.5, display: "flex", flexDirection: "column" }}>
               <Typography
                 variant="subtitle1"
-                sx={{
-                  ml: 1.2,
-                  fontWeight: "bold",
-                  color: "white",
-                  backgroundColor: "transparent",
-                }}
+                sx={{ fontWeight: "bold", color: "white", fontSize: "1rem" }}
               >
-                Keek Inteligencia
+                Keek Conecta
               </Typography>
-            )}
-          </Box>
-          <IconButton
-            onClick={() => {
-              setBarraLateralAberta((prev) => {
-                const novoEstado = !prev;
-                requestAnimationFrame(() => {
-                  setTimeout(() => {
-                    window.dispatchEvent(new Event("resize"));
-                  }, 50);
-                });
-                return novoEstado;
-              });
-            }}
-            sx={{
-              color: "white",
-              display: { xs: "none", md: "flex" },
-              "&:hover": { bgcolor: "rgba(255, 255, 255, 0.1)" },
-            }}
-          >
-            {barraLateralAberta ? <ChevronLeft /> : <ChevronRight />}
-          </IconButton>
+              <Typography
+                variant="body2"
+                sx={{ color: "#1A3365", fontWeight: 700, fontSize: "0.95rem" }}
+              >
+                Leandro O.
+              </Typography>
+            </Box>
+          )}
         </Box>
+
         <Sidebar estaAberta={barraLateralAberta} />
       </Box>
 
@@ -149,7 +130,7 @@ export function Layout({
         sx={{
           "& .MuiDrawer-paper": {
             width: "70vw",
-            bgcolor: "#1E6F76",
+            bgcolor: "#FF7A01",
           },
           display: { xs: "block", md: "none" },
         }}
@@ -201,8 +182,11 @@ export function Layout({
           transition: "all 0.3s ease-in-out",
         }}
       >
-        <CabecalhoEstilizado position="relative" sx={{ zIndex: 0, height: "10vh" }}>
-          <Toolbar sx={{ display: "flex", alignItems: "center",  }}>
+        <CabecalhoEstilizado
+          position="relative"
+          sx={{ zIndex: 0, height: "10vh" }}
+        >
+          <Toolbar sx={{ display: "flex", alignItems: "center" }}>
             <IconButton
               edge="start"
               color="inherit"
@@ -212,7 +196,11 @@ export function Layout({
               <Menu />
             </IconButton>
             {titulo && (
-              <Typography variant="h6" component="h1" sx={{ flexGrow: 1, fontSize: "3.2vh" }}>
+              <Typography
+                variant="h6"
+                component="h1"
+                sx={{ flexGrow: 1, fontSize: "3.2vh", height: "6vh" }}
+              >
                 {titulo || "Keek Inteligencia"}
               </Typography>
             )}
@@ -220,7 +208,7 @@ export function Layout({
         </CabecalhoEstilizado>
         <Box
           sx={{
-            p: { xs: 2, md: 3 },
+            p: { xs: 2 },
             mx: "auto",
             maxWidth: barraLateralAberta ? "100vw" : "100%",
             transition: "all 0.3s ease-in-out",

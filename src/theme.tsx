@@ -5,7 +5,7 @@ import "@fontsource/lato"; // Importa a fonte Lato
 export const temaPlansan = createTheme({
   palette: {
     primary: {
-      main: "#1E6F76", // Verde keekInteligencia
+      main: "#FF7A01", // Verde keekInteligencia
       light: "#5ba55e",
       dark: "#EE8552",
       contrastText: "#ffffff",
