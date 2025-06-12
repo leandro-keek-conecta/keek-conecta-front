@@ -83,14 +83,14 @@ export function Sidebar({
               value={tela}
               onChange={handleChange}
               displayEmpty
-              sx={{ fontSize: "2vh" }}
+              sx={{ fontSize: "1rem" }}
               renderValue={(selected) => {
                 if (!selected) {
                   return (
                     <Box
                       display="flex"
                       alignItems="center"
-                      sx={{ fontSize: "2.2vh" }}
+                      sx={{ fontSize: "1rem" }}
                     >
                       <SettingsIcon sx={{ marginRight: 1, height: "24px" }} />
                       Configurações
@@ -108,13 +108,13 @@ export function Sidebar({
                 return selectedOption[selected] || "Configurações";
               }}
             >
-              <MenuItem value="/admin/opcoes" sx={{ fontSize: "2.2vh" }}>
+              <MenuItem value="/admin/opcoes" sx={{ fontSize: "1rem" }}>
                 Opções Administrador
               </MenuItem>
-              <MenuItem value="/autorizacao" sx={{ fontSize: "2.2vh" }}>
+              <MenuItem value="/autorizacao" sx={{ fontSize: "1rem" }}>
                 Tela de Autorização
               </MenuItem>
-              <MenuItem value="/" sx={{ fontSize: "2.2vh" }}>
+              <MenuItem value="/" sx={{ fontSize: "1rem" }}>
                 Sair
               </MenuItem>
             </Select>

@@ -2,28 +2,34 @@
 
 .loginContainer {
   display: flex;
-  flex: 1;
-  background: linear-gradient(180deg, #230044 0%, #8f2b4d 64.27%, #fc5656 100%);
-  min-height: 100vh; /* ocupa toda a altura da tela */
+  min-height: 100vh;
   width: 100vw;
+  background: linear-gradient(180deg, #230044 0%, #8f2b4d 64.27%, #fc5656 100%);
   align-items: center;
-  justify-content: space-around;
+  justify-content: center;
+  gap: 10%; /* Espaço de 10% entre os lados */
+  padding: 5rem;
+  box-sizing: border-box;
 }
 
 .containerLeft {
+  flex: 7;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  height: 60vh; /* igual ao containerRight */
-  flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-evenly;
+  height: 60vh;
 }
 
 .containerRight {
+  flex: 3;
   display: flex;
   flex-direction: column;
   justify-content: center;
   height: 60vh;
+}
+
+.form {
+  width: 100%;
 }
 
 .logo {
@@ -40,14 +46,13 @@
 }
 
 .loginForm {
-  padding: 3rem;
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center; /* Corrige o desalinhamento */
   text-align: center; /* Garante alinhamento do texto */
   display: inline-flex;
-  padding: 2rem 40px 40px 2rem;
   flex-direction: column;
   border-radius: 25px;
   border: 2px solid #fff;
