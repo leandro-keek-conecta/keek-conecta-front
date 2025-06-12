@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 // Páginas
 import Index from "../pages/Index";
 import NotFound from "../pages/NotFound";
-import Apresentacao from "../pages/home/Apresentacao";
+import Home from "../pages/home/Home";
 import Login from "@/pages/login/Login";
 
 const RoutesConfig = () => (
@@ -14,7 +14,7 @@ const RoutesConfig = () => (
     <Route path="/" element={<Login />} />
     
     {/* Rota para Apresentação */}
-    <Route path="/apresentacao" element={<Apresentacao />} />
+    <Route path="/home" element={<Home />} />
 
     {/* Rota para NotFound */}
     <Route path="*" element={<NotFound />} />
