@@ -1,5 +1,5 @@
 import User from "@/@types/IUserType";
-import { ReactNode, createContext, useContext, useState } from "react";
+import { ReactNode, createContext, useContext, useEffect, useState } from "react";
 
 interface AuthContextType {
   user: User | null;
@@ -14,10 +14,20 @@ interface AuthProviderProps {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+ const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true); // <- adicionado
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+    setLoading(false); // <- importante
+  }, []);
+
   return (
     <AuthContext.Provider value={{ user, setUser, isAuthenticated: !!user }}>
-      {children}
+      {!loading && children}
     </AuthContext.Provider>
   );
 };

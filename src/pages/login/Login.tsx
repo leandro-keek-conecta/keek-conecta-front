@@ -1,5 +1,9 @@
 import { login } from "@/services/auth/authService";
+
 import styles from "./Login.module.css";
+import logoBayeux from "@/assets/bayeux.png";
+import logoDefault from "@/assets/logo_padrao.png"; // (adicione esse arquivo ou ajuste o caminho)
+
 import {
   Box,
   Button,
@@ -13,14 +17,27 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import UserLogin from "@/@types/userLogin";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import CustomAlert from "@/components/Alert";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Login() {
   const [mostraSenha, setMostraSenha] = useState(false);
+  const { setUser } = useAuth();
   const [loading, setLoading] = useState(false);
+  const location = useLocation();
+  const { pathname } = useLocation();
+
+  const logoSrc = pathname === "/bayeux" ? logoBayeux : logoDefault;
+  console.log(pathname);
+  console.log(!!logoSrc);
+
+  useEffect(() => {
+    setFormData({ email: "", password: "" });
+  }, []);
+
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
@@ -46,20 +63,21 @@ export default function Login() {
     };
     try {
       const response = await login(data);
-      console.log("Resposta completa do login:", response);
-      setTimeout(() => {
-        console.log("um minuito");
-      }, 8000);
+
       if (response.status === 200) {
+        const userRole = { ...response.data.response.user, role: "USER" };
+        setUser(userRole);
+
         setAlert({
           show: true,
           category: "success",
           title: "Login Feito Com Sucesso!",
         });
+
         setTimeout(() => {
           navigate("/home");
         }, 3000);
-      } 
+      }
     } catch (error) {
       setAlert({
         show: true,
@@ -90,9 +108,7 @@ export default function Login() {
       )}
       <Box className={styles.containerLeft}>
         <Box className={styles.logo}>
-          <Typography variant="h4" fontWeight="bold" color="white">
-            Logo
-          </Typography>
+          <img src={logoSrc} alt="Logo" style={{ maxWidth: "200px" }} />
         </Box>
         <Box className={styles.titleSubtitle}>
           <Typography variant="h3" fontWeight="bold" color="white">
@@ -133,15 +149,23 @@ export default function Login() {
               size="medium"
               value={formData.email}
               onChange={handleChange}
+              onFocus={(e) => e.target.setAttribute("autocomplete", "email")}
+              autoComplete="off"
               sx={{ backgroundColor: "white", borderRadius: "4px" }}
               InputProps={{
                 style: {
-                  color: "#333", // cor do texto digitado
+                  color: "#333",
                 },
               }}
               InputLabelProps={{
+                shrink: true,
                 style: {
-                  color: "#555", // cor do label (placeholder flutuante)
+                  color: "#333",
+                  fontSize: "1.5rem", // tamanho equilibrado
+                  fontWeight: 500,
+                  top: "0.3rem",
+                  borderRadius: "8px",
+                  padding: "0.1rem",
                 },
               }}
             />
@@ -170,8 +194,14 @@ export default function Login() {
                 ),
               }}
               InputLabelProps={{
+                shrink: true, // <-- mantém o label sempre acima
                 style: {
-                  color: "#555", // cor do label (placeholder flutuante)
+                  color: "#333",
+                  fontSize: "1.5rem", // tamanho equilibrado
+                  fontWeight: 500,
+                  top: "0.3rem",
+                  borderRadius: "8px",
+                  padding: "0.1rem",
                 },
               }}
             />

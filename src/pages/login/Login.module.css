@@ -36,6 +36,10 @@
   margin-bottom: 2rem;
 }
 
+.logo img{
+  border-radius: 18px;
+}
+
 .titleSubtitle {
   text-align: left;
   max-width: 80%;

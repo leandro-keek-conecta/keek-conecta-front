@@ -4,8 +4,7 @@ import { api } from "@/services/api/api";
 export async function login(data: UserLogin) {
   try {
     const response = await api.post("/auth/login", data);
-    console.log("response", response)
-    console.log(response.data.response.accessToken)
+
     // Armazena o token no localStorage após o login
     if (response.data.response.accessToken) {
       localStorage.setItem("token", response.data.response.accessToken);
@@ -14,8 +13,8 @@ export async function login(data: UserLogin) {
 
     // Armazena os dados do usuário no localStorage
     if (response.data.response.user) {
-      localStorage.setItem("user", JSON.stringify(response.data.response.user)); // Serializa o objeto
-      localStorage.setItem("planoId", "74");
+      const userRole = {...response.data.response.user, role: "USER"}
+      localStorage.setItem("user", JSON.stringify(userRole)); // Serializa o objeto
     }
 
     return response; // Retorna os dados recebidos da API
