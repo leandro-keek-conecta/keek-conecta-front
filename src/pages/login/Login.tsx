@@ -4,18 +4,7 @@ import styles from "./Login.module.css";
 import logoBayeux from "@/assets/bayeux.png";
 import logoDefault from "@/assets/logo_padrao.png"; // (adicione esse arquivo ou ajuste o caminho)
 
-import {
-  Box,
-  Button,
-  Checkbox,
-  FormControlLabel,
-  TextField,
-  Typography,
-  Link,
-  InputAdornment,
-  IconButton,
-  CircularProgress,
-} from "@mui/material";
+import { Box, Button, Checkbox, FormControlLabel, TextField, Typography, Link, InputAdornment, IconButton, CircularProgress } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import UserLogin from "@/@types/userLogin";
@@ -27,12 +16,9 @@ export default function Login() {
   const [mostraSenha, setMostraSenha] = useState(false);
   const { setUser } = useAuth();
   const [loading, setLoading] = useState(false);
-  const location = useLocation();
   const { pathname } = useLocation();
 
   const logoSrc = pathname === "/bayeux" ? logoBayeux : logoDefault;
-  console.log(pathname);
-  console.log(!!logoSrc);
 
   useEffect(() => {
     setFormData({ email: "", password: "" });
@@ -65,7 +51,7 @@ export default function Login() {
       const response = await login(data);
 
       if (response.status === 200) {
-        const userRole = { ...response.data.response.user, role: "USER" };
+        const userRole = response.data.response.user;
         setUser(userRole);
 
         setAlert({
@@ -74,9 +60,21 @@ export default function Login() {
           title: "Login Feito Com Sucesso!",
         });
 
-        setTimeout(() => {
-          navigate("/home");
-        }, 3000);
+        if(userRole.role === "USER"){
+          setTimeout(() => {
+            navigate("/home");
+          }, 3000);
+        }
+        else if(userRole.role === "ADMIN"){
+          setTimeout(() => {
+            navigate("/superAdmin");
+          }, 3000);
+        }
+        else if(userRole.role === "SUPERADMIN"){
+          setTimeout(() => {
+            navigate("/superAdmin");
+          }, 3000);
+        }
       }
     } catch (error) {
       setAlert({
