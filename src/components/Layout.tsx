@@ -41,7 +41,7 @@ export function Layout({
 }: PropriedadesLayout) {
   const [barraLateralAberta, setBarraLateralAberta] = useState(true);
   const [menuMobileAberto, setMenuMobileAberto] = useState(false);
-
+  const user =  JSON.parse(localStorage.getItem("user"))
   // Se não deve mostrar a sidebar, renderiza apenas o conteúdo principal
   if (!mostrarSidebar) {
     return (
@@ -97,7 +97,7 @@ export function Layout({
           }}
         >
           <img
-            src={Logo}
+            src={user.projeto.url? user.projeto.url : Logo}
             alt="keekInteligencia"
             style={{ height: "42px", width: "42px", borderRadius: "50%" }}
           />
@@ -105,15 +105,15 @@ export function Layout({
             <Box sx={{ ml: 1.5, display: "flex", flexDirection: "column" }}>
               <Typography
                 variant="subtitle1"
-                sx={{ fontWeight: "bold", color: "white", fontSize: "1rem" }}
+                sx={{ fontWeight: "bold", color: "white", fontSize: "1.5rem" }}
               >
-                Keek Conecta
+                {user.projeto.nome}
               </Typography>
               <Typography
                 variant="body2"
-                sx={{ color: "#1A3365", fontWeight: 700, fontSize: "0.95rem" }}
+                sx={{ color: "#1A3365", fontWeight: 700, fontSize: "1rem" }}
               >
-                Leandro O.
+                {user.name}
               </Typography>
             </Box>
           )}
@@ -184,7 +184,7 @@ export function Layout({
       >
         <CabecalhoEstilizado
           position="relative"
-          sx={{ zIndex: 0, height: "10vh" }}
+          sx={{ zIndex: 0, height: "8vh" }}
         >
           <Toolbar sx={{ display: "flex", alignItems: "center" }}>
             <IconButton
