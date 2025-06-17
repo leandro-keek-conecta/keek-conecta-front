@@ -16,6 +16,7 @@ import MenuItem from "@mui/material/MenuItem";
 import styles from "./sidebar.module.css";
 import React, { useEffect, useState } from "react";
 import { ItemMenu } from "../ItemMenu";
+import { logout } from "@/services/auth/authService";
 
 interface PropriedadesSidebar {
   estaAberta: boolean;
@@ -23,12 +24,10 @@ interface PropriedadesSidebar {
   aoFechar?: () => void;
 }
 
-export function Sidebar({
-  estaAberta,
-  isMobile = false,
-  aoFechar,
-}: PropriedadesSidebar) {
+export function Sidebar({ estaAberta, isMobile = false, aoFechar }: PropriedadesSidebar) {
   const navigate = useNavigate();
+  const user =  JSON.parse(localStorage.getItem("user"))
+  console.log(user)
   const [tela, setTela] = useState("");
 
   useEffect(() => {
@@ -114,7 +113,7 @@ export function Sidebar({
               <MenuItem value="/autorizacao" sx={{ fontSize: "1rem" }}>
                 Tela de Autorização
               </MenuItem>
-              <MenuItem value="/" sx={{ fontSize: "1rem" }}>
+              <MenuItem value="/" sx={{ fontSize: "1rem" }} onClick={logout}>
                 Sair
               </MenuItem>
             </Select>

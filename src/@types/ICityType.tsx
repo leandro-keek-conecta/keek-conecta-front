@@ -1,4 +1,11 @@
+import User from "./IUserType";
+
 export default interface City {
+  id: number;
   name: string;
-  cod: string;
+  state: string;
+  logoUrl?: string;
+  users?: User[]; // geralmente omitido no frontend para evitar carregar tudo
+  createdAt: string;
+  updatedAt: string;
 }
