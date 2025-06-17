@@ -1,4 +1,4 @@
-import { Autocomplete, TextField } from "@mui/material";
+import { Autocomplete, TextField, useMediaQuery } from "@mui/material";
 
 interface Option {
   label: string;
@@ -23,6 +23,8 @@ export default function SelectButton({
   error = false,
   helperText = "",
 }: SelectTexProps) {
+  const isMobile = useMediaQuery("(max-width:768px)");
+  const size = isMobile ? "40px" : "50px";
   return (
     <Autocomplete
       options={options}
@@ -46,7 +48,7 @@ export default function SelectButton({
           }}
           sx={{
             "& .MuiOutlinedInput-root": {
-              height: "45px", // Altura do input
+              height: size, // Altura do input
             },
             "& .MuiInputBase-input": {
               padding: "12px 14px",

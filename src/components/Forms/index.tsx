@@ -9,7 +9,7 @@ interface Option {
   value: string | number;
 }
 
-interface InputType {
+export interface InputType {
   name: string;
   title: string;
   placeholder?: string;
@@ -34,6 +34,8 @@ export default function Forms({
   errors,
   onInputChange,
 }: FormsProps) {
+
+
   return (
     <Box
       className="form-container"

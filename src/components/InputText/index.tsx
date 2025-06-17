@@ -22,7 +22,6 @@ export default function InputTex({
 }: InputTexProps) {
   const isMobile = useMediaQuery("(max-width:768px)");
   const size = isMobile ? "40px" : "50px";
-
   return (
     <TextField
       label={label}
