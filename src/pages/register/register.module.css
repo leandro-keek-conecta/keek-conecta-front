@@ -1,0 +1,25 @@
+
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap");
+
+.container {
+  padding: 2rem;
+}
+
+.bottomContainer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.buttom {
+  background-color: #ff7a01;
+  padding: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  border-radius: 8px;
+  color: #f2f2f2;
+  font-family: "Lato", sans-serif;
+  font-weight: 500;
+  font-size: 1rem;
+}

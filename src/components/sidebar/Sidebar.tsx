@@ -27,7 +27,6 @@ interface PropriedadesSidebar {
 export function Sidebar({ estaAberta, isMobile = false, aoFechar }: PropriedadesSidebar) {
   const navigate = useNavigate();
   const user =  JSON.parse(localStorage.getItem("user"))
-  console.log(user)
   const [tela, setTela] = useState("");
 
   useEffect(() => {

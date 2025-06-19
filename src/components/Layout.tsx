@@ -146,15 +146,15 @@ export function Layout({
         >
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <img
-              src={Logo}
+              src={user.projeto.url? user.projeto.url : Logo}
               alt="keekInteligencia"
               style={{ height: "32px", width: "32px", borderRadius: "50%" }}
             />
             <Typography
               variant="subtitle1"
-              sx={{ ml: 1, fontWeight: "bold", color: "white" }}
+              sx={{ ml: 1, fontWeight: "bold", color: "white", fontSize: "1rem"}}
             >
-              Keek Inteligencia
+               {user.projeto.nome}
             </Typography>
           </Box>
           <IconButton
@@ -184,7 +184,7 @@ export function Layout({
       >
         <CabecalhoEstilizado
           position="relative"
-          sx={{ zIndex: 0, height: "8vh" }}
+          sx={{ zIndex: 0, height: "4rem" }}
         >
           <Toolbar sx={{ display: "flex", alignItems: "center" }}>
             <IconButton
@@ -199,7 +199,7 @@ export function Layout({
               <Typography
                 variant="h6"
                 component="h1"
-                sx={{ flexGrow: 1, fontSize: "3.2vh", height: "6vh" }}
+                sx={{ flexGrow: 1, fontSize: "1.5rem", height: "3rem" }}
               >
                 {titulo || "Keek Inteligencia"}
               </Typography>
@@ -208,7 +208,7 @@ export function Layout({
         </CabecalhoEstilizado>
         <Box
           sx={{
-            p: { xs: 2 },
+            /* p: { xs: 2 }, */
             mx: "auto",
             maxWidth: barraLateralAberta ? "100vw" : "100%",
             transition: "all 0.3s ease-in-out",
