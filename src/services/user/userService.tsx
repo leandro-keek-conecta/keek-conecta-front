@@ -1,27 +1,48 @@
-import { userCreateType } from "@/@types/IUserCreateType";
-import { useAuth } from "@/context/AuthContext";
-import { api } from "@/services/api/api";
+import { api } from "../api/api";
 
-export async function createUser(data: userCreateType) {
-  try {
-    const response = await api.post("/user/create", data);
-
-    return response; // Retorna os dados recebidos da API
-  } catch (error) {
-    const message =
-      error.data?.details || error.data?.message || "Erro ao criar usuário";
-    throw new Error(message);
-  }
+interface CreateUserParams {
+  email: string;
+  name: string;
+  password: string;
+  profession: string;
+  role: string;
+  projeto: { id: number };
 }
 
-export async function logout() {
-  const { setUser } = useAuth();
+interface ApiResponse {
+  message: string;
+  data?: any;
+}
+
+export async function createUser(userData: CreateUserParams): Promise<ApiResponse> {
   try {
-    // Exemplo de chamada de logout, se necessário
-    /* await api.post("/auth/logout"); */
-    setUser(null);
-    localStorage.clear(); // Remove o token do localStorage
+    const response = await api.post('/user/create', userData);
+    
+    return {
+      message: response.data.message,
+      data: response.data.data,
+    };
   } catch (error: any) {
-    console.error("Erro ao fazer logout: ", error);
+    const status = error.status;
+    const message = error.data.message || "Erro inesperado no servidor.";
+
+    if (status === 401) {
+      throw new Error("Usuário não autorizado. Verifique seu login.");
+    }
+
+    if (status === 403) {
+      throw new Error("Você não tem permissão para criar usuários.");
+    }
+
+    if (status === 409) {
+      throw new Error("O email informado já está cadastrado.");
+    }
+
+    if (status === 400) {
+      throw new Error("Erro de validação: " + (error.data.issues?.[0]?.message || message));
+    }
+
+    // Tratamento para outros erros não mapeados especificamente
+    throw new Error(message);
   }
 }

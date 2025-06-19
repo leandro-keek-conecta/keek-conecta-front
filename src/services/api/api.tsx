@@ -17,7 +17,7 @@ export const api = axios.create({
 api.interceptors.response.use(
   (response) => response, // Sucesso, apenas retorna a resposta
   (error) => {
-    console.log("Erro na requisição: ", error);
+    
 
     const data = error.response?.data || { message: "Erro na requisição" };
 

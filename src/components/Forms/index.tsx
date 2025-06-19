@@ -43,21 +43,21 @@ export default function Forms({
         display: "grid",
         gridTemplateColumns: "repeat(12, 1fr)", // 12 colunas fixas
         gap: 2,
-        fontSize: "2.2vh",
+        fontSize: "1.1rem",
         "& input, & .MuiInputBase-input": {
-          fontSize: "2.2vh",
+          fontSize: "1.1rem",
         },
         "& label, & .MuiInputLabel-root": {
-          fontSize: "2.2vh",
+          fontSize: "1.1rem",
         },
         "& .MuiFormHelperText-root": {
-          fontSize: "2.2vh",
+          fontSize: "1.1rem",
         },
         "& ::placeholder": {
-          fontSize: "2.2vh",
+          fontSize: "1.1rem",
         },
         "& .MuiSelect-select": {
-          fontSize: "2.2vh",
+          fontSize: "1.1rem",
         },
       }}
     >

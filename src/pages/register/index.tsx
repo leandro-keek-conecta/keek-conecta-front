@@ -3,15 +3,21 @@ import Forms from "@/components/Forms";
 import { Layout } from "@/components/Layout";
 import { Box, Button, Card, CircularProgress, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { userInputs } from "./inputs/userInput";
 import { projectInputs } from "./inputs/projectInput";
 import { createUser } from "@/services/user/userService";
 import CustomAlert from "@/components/Alert";
+import { logout } from "@/services/auth/authService";
 
 export default function Register() {
   const [loading, setLoading] = useState(false);
-  const { control, handleSubmit, formState: { errors } } = useForm();
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
   const [alert, setAlert] = useState<{
     show: boolean;
     category?: "success" | "error" | "info" | "warning";
@@ -21,19 +27,16 @@ export default function Register() {
     category: undefined,
     title: undefined,
   });
-  async function onSubmit(data: any) {
-    console.log("Cadastro do usuário:", data);
-
+    async function onSubmit(data: any) {
     const userData = {
       email: data.email,
       password: data.password,
       name: data.name,
       role: data.role,
       profession: data.profession,
-      projeto: {
-        id: data.projectName,
-      },
+      projeto: { id: data.projectName },
     };
+
     try {
       setLoading(true);
       await createUser(userData);
@@ -44,32 +47,35 @@ export default function Register() {
         title: "Usuário cadastrado com sucesso!",
       });
 
-      // Oculta o alerta após 5 segundos
-      setTimeout(() => {
-        setAlert({ show: false });
-      }, 5000);
+      reset(); // limpa o formulário após sucesso
     } catch (error: any) {
+      const errorMsg = error.message || "Erro desconhecido";
+
       setAlert({
         show: true,
         category: "error",
-        title: error.message || "Erro ao cadastrar usuário",
+        title: `Erro: ${errorMsg}`,
       });
 
-      setTimeout(() => {
-        setAlert({ show: false });
-      }, 5000);
+      if (errorMsg.includes("não autorizado") || errorMsg.includes("não tem permissão")) {
+        // Ação automática se não autorizado
+        logout();
+        // Talvez redirecionar para login:
+        // router.push('/login');
+      }
     } finally {
       setLoading(false);
     }
   }
+
 
   return (
     <Layout titulo="Tela de cadastro">
       {alert.show && alert.title && (
         <CustomAlert category={alert.category} title={alert.title} />
       )}
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Card sx={{ p: 3 }}>
+      <form onSubmit={handleSubmit(onSubmit)} className={styles.container}>
+        <Card sx={{ p: 3,}}>
           {/* Título: Dados do Usuário */}
           <Typography
             variant="h6"
