@@ -1,5 +1,6 @@
 import { Layout } from "@/components/Layout";
 import styles from "./home.module.css";
+import { useLocation } from "react-router-dom";
 
 export default function Home() {
   const url = "https://ourworldindata.org/grapher/renewables-share-energy";

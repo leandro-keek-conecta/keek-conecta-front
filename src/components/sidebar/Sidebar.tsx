@@ -24,13 +24,19 @@ interface PropriedadesSidebar {
   aoFechar?: () => void;
 }
 
-export function Sidebar({ estaAberta, isMobile = false, aoFechar }: PropriedadesSidebar) {
+export function Sidebar({
+  estaAberta,
+  isMobile = false,
+  aoFechar,
+}: PropriedadesSidebar) {
   const navigate = useNavigate();
-  const user =  JSON.parse(localStorage.getItem("user"))
+  const user = JSON.parse(localStorage.getItem("user"));
   const [tela, setTela] = useState("");
+  const isAdminOrMore = user?.role === "SUPERADMIN" || user?.role === "ADMIN";
 
   useEffect(() => {
     const root = document.getElementById("main-container");
+
     if (root) {
       root.style.display = "none";
       void root.offsetHeight; // força reflow
@@ -49,13 +55,24 @@ export function Sidebar({ estaAberta, isMobile = false, aoFechar }: Propriedades
   return (
     <nav className={styles.sidebarNav}>
       <ul className={styles.ulStyle}>
-        <ItemMenu
-          icone={<AttachMoney />}
-          rotulo="Home"
-          para="/home"
-          estaAberta={estaAberta}
-          onClick={isMobile ? aoFechar : undefined}
-        />
+        {isAdminOrMore ? (
+          <ItemMenu
+            icone={<AttachMoney />}
+            rotulo="Projetos"
+            para="/projetos"
+            estaAberta={estaAberta}
+            onClick={isMobile ? aoFechar : undefined}
+          />
+        ) : (
+          <ItemMenu
+            icone={<AttachMoney />}
+            rotulo="Home"
+            para="/home"
+            estaAberta={estaAberta}
+            onClick={isMobile ? aoFechar : undefined}
+          />
+        )}
+
         <ItemMenu
           icone={<FormatListNumbered />}
           rotulo="Metricas"
@@ -98,19 +115,19 @@ export function Sidebar({ estaAberta, isMobile = false, aoFechar }: Propriedades
 
                 // Exibir o label normal do MenuItem selecionado
                 const selectedOption = {
-                  "/admin/opcoes": "Opções Administrador",
-                  "/autorizacao": "Tela de Autorização",
+                  /*                   "/admin/opcoes": "Opções Administrador",*/
+                  "/cadastro": "Tela de cadatro",
                   "/": "Sair",
                 };
 
                 return selectedOption[selected] || "Configurações";
               }}
             >
-              <MenuItem value="/admin/opcoes" sx={{ fontSize: "1rem" }}>
+              {/*               <MenuItem value="/admin/opcoes" sx={{ fontSize: "1rem" }}>
                 Opções Administrador
-              </MenuItem>
-              <MenuItem value="/autorizacao" sx={{ fontSize: "1rem" }}>
-                Tela de Autorização
+              </MenuItem> */}
+              <MenuItem value="/cadastro" sx={{ fontSize: "1rem" }}>
+                Tela de Cadastro
               </MenuItem>
               <MenuItem value="/" sx={{ fontSize: "1rem" }} onClick={logout}>
                 Sair
