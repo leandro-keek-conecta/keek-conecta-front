@@ -1,0 +1,41 @@
+.card {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  border-radius: 8px;
+}
+
+.headerRight {
+  font-size: 14px;
+  color: #666;
+}
+
+.content {
+  margin: 12px 0;
+}
+
+.chart {
+  width: 100%;
+  height: 20vh;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+}
