@@ -9,6 +9,8 @@ import { SuperAdmin } from '@/pages/superAdmin';
 import Register from '@/pages/register';
 import Projects from '@/pages/projects';
 import ProjectAcess from '@/pages/projectAcess';
+import Metricas from '@/pages/metricas';
+import Estatisticas from '@/pages/estatistica';
 
 
 const RoutesConfig = () => (
@@ -18,6 +20,8 @@ const RoutesConfig = () => (
       <Route path="/bayeux" element={<Login />} />
       {/* User */}
       <Route path="/home" element={<ProtectedRoute allowedRoles={["USER", "ADMIN", "SUPERADMIN"]}><Home /></ProtectedRoute>} />
+      <Route path="/metricas" element={<ProtectedRoute allowedRoles={["USER", "ADMIN", "SUPERADMIN"]}><Metricas /></ProtectedRoute>} />
+      <Route path="/estatisticas" element={<ProtectedRoute allowedRoles={["USER", "ADMIN", "SUPERADMIN"]}><Estatisticas /></ProtectedRoute>} />
 
       {/* Admin, superAdmin */}
       <Route path="/superAdmin" element={<ProtectedRoute allowedRoles={["SUPERADMIN"]}><SuperAdmin /></ProtectedRoute>} />
