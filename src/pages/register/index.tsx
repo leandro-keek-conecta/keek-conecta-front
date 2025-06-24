@@ -2,6 +2,14 @@ import styles from "./register.module.css";
 import Forms, { InputType } from "@/components/Forms";
 import { Layout } from "@/components/Layout";
 import { Box, Button, Card, CircularProgress, Typography } from "@mui/material";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+} from "@mui/material";
+import { createProject } from "@/services/projetos/projetoService";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { userInputs } from "./inputs/userInput";
@@ -10,9 +18,50 @@ import { createUser } from "@/services/user/userService";
 import CustomAlert from "@/components/Alert";
 import { logout } from "@/services/auth/authService";
 import { fetchProjects, ProjectDTO } from "@/services/projetos/projetoService";
+import { ClassNames } from "@emotion/react";
 
 export default function Register() {
   const [loading, setLoading] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [newProjectName, setNewProjectName] = useState("");
+  const [newProjectLogo, setNewProjectLogo] = useState("");
+
+  const handleCreateProject = async () => {
+    if (!newProjectName || !newProjectLogo) {
+      setAlert({
+        show: true,
+        category: "warning",
+        title: "Preencha todos os campos do projeto",
+      });
+      return;
+    }
+
+    try {
+      await createProject({
+        name: newProjectName,
+        logoUrl: newProjectLogo,
+      });
+
+      setAlert({
+        show: true,
+        category: "success",
+        title: "Projeto criado com sucesso!",
+      });
+
+      // Atualiza lista de projetos
+      const updatedProjects = await fetchProjects();
+      setProjects(updatedProjects);
+
+      // Limpa e fecha
+      setNewProjectName("");
+      setNewProjectLogo("");
+      setOpenModal(false);
+    } catch (error: any) {
+      const msg = error.message || "Erro ao criar projeto";
+      setAlert({ show: true, category: "error", title: msg });
+    }
+  };
+
   const {
     control,
     handleSubmit,
@@ -57,14 +106,14 @@ export default function Register() {
     title: undefined,
   });
   useEffect(() => {
-  if (alert.show) {
-    const timeout = setTimeout(() => {
-      setAlert({ show: false });
-    }, 5000); // 5 segundos
+    if (alert.show) {
+      const timeout = setTimeout(() => {
+        setAlert({ show: false });
+      }, 5000); // 5 segundos
 
-    return () => clearTimeout(timeout); // limpa o timeout se desmontar
-  }
-}, [alert.show]);
+      return () => clearTimeout(timeout); // limpa o timeout se desmontar
+    }
+  }, [alert.show]);
   async function onSubmit(data: any) {
     const userData = {
       email: data.email,
@@ -130,10 +179,47 @@ export default function Register() {
 
   return (
     <Layout titulo="Tela de cadastro">
+      {/*Componente de alert */}
       {alert.show && alert.title && (
-        <CustomAlert category={alert.category} title={alert.title}  onClose={() => setAlert({ show: false })} />
+        <CustomAlert
+          category={alert.category}
+          title={alert.title}
+          onClose={() => setAlert({ show: false })}
+        />
       )}
+      {/* Modal de cadastro */}
+      <Dialog open={openModal} onClose={() => setOpenModal(false)} maxWidth="sm" fullWidth>
+        <DialogTitle>Cadastrar novo projeto</DialogTitle>
+        <DialogContent dividers>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            <TextField
+              label="Nome do Projeto"
+              value={newProjectName}
+              onChange={(e) => setNewProjectName(e.target.value)}
+              required
+            />
+            <TextField
+              label="URL da Logo"
+              value={newProjectLogo}
+              onChange={(e) => setNewProjectLogo(e.target.value)}
+              required
+            />
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenModal(false)}>Cancelar</Button>
+          <Button variant="contained" onClick={handleCreateProject}>
+            Cadastrar
+          </Button>
+        </DialogActions>
+      </Dialog>
+
       <form onSubmit={handleSubmit(onSubmit)} className={styles.container}>
+        <Box sx={{ mt: 2, textAlign: "center" }} className={styles.buttonContainer} >
+          <Button onClick={() => setOpenModal(true)} className={styles.buttonContent}>
+            Cadastrar novo projeto
+          </Button>
+        </Box>
         <Card sx={{ p: 3 }}>
           {/* Título: Dados do Usuário */}
           <Typography
@@ -144,7 +230,6 @@ export default function Register() {
             Dados do Usuário
           </Typography>
           <Forms inputsList={userInputs} control={control} errors={errors} />
-
           {/* Título: Dados do Projeto */}
           <Typography
             variant="h6"

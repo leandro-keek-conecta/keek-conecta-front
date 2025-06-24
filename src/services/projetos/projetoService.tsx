@@ -14,6 +14,6 @@ export async function fetchProjects(): Promise<ProjectDTO[]> {
 
 /** POST /projetos – cria novo */
 export async function createProject(payload: Omit<ProjectDTO, "id">): Promise<ProjectDTO> {
-  const { data } = await api.post<ProjectDTO>("/projetos", payload);
+  const { data } = await api.post<ProjectDTO>("/projeto/create", payload);
   return data;
 }
