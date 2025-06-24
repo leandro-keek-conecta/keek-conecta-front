@@ -1,5 +1,5 @@
 import styles from "./register.module.css";
-import Forms from "@/components/Forms";
+import Forms, { InputType } from "@/components/Forms";
 import { Layout } from "@/components/Layout";
 import { Box, Button, Card, CircularProgress, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
@@ -9,6 +9,7 @@ import { projectInputs } from "./inputs/projectInput";
 import { createUser } from "@/services/user/userService";
 import CustomAlert from "@/components/Alert";
 import { logout } from "@/services/auth/authService";
+import { fetchProjects, ProjectDTO } from "@/services/projetos/projetoService";
 
 export default function Register() {
   const [loading, setLoading] = useState(false);
@@ -18,6 +19,34 @@ export default function Register() {
     reset,
     formState: { errors },
   } = useForm();
+  const [projects, setProjects] = useState<ProjectDTO[]>([]);
+  const projectInputList = Array.isArray(projects)
+    ? projects.map((project) => ({
+        label: project.name,
+        value: project.id,
+      }))
+    : [];
+
+  const projectInputs: InputType[] = [
+    {
+      name: "projectName",
+      title: "Nome",
+      placeholder: "Digite o nome do projeto",
+      type: "Select",
+      colSpan: 6,
+      selectOptions: [...projectInputList],
+      rules: { required: "Nome do projeto é obrigatório" },
+    },
+    {
+      name: "projectLogoUrl",
+      title: "url",
+      placeholder: "Digite a URL da logo do projeto",
+      type: "text",
+      colSpan: 6,
+      rules: { required: "URL da logo é obrigatória" },
+    },
+  ];
+
   const [alert, setAlert] = useState<{
     show: boolean;
     category?: "success" | "error" | "info" | "warning";
@@ -27,7 +56,16 @@ export default function Register() {
     category: undefined,
     title: undefined,
   });
-    async function onSubmit(data: any) {
+  useEffect(() => {
+  if (alert.show) {
+    const timeout = setTimeout(() => {
+      setAlert({ show: false });
+    }, 5000); // 5 segundos
+
+    return () => clearTimeout(timeout); // limpa o timeout se desmontar
+  }
+}, [alert.show]);
+  async function onSubmit(data: any) {
     const userData = {
       email: data.email,
       password: data.password,
@@ -57,7 +95,10 @@ export default function Register() {
         title: `Erro: ${errorMsg}`,
       });
 
-      if (errorMsg.includes("não autorizado") || errorMsg.includes("não tem permissão")) {
+      if (
+        errorMsg.includes("não autorizado") ||
+        errorMsg.includes("não tem permissão")
+      ) {
         // Ação automática se não autorizado
         logout();
         // Talvez redirecionar para login:
@@ -68,14 +109,32 @@ export default function Register() {
     }
   }
 
+  useEffect(() => {
+    async function loadProjects() {
+      try {
+        const data = await fetchProjects();
+        if (Array.isArray(data)) {
+          setProjects(data);
+        } else {
+          console.error("Dados recebidos não são um array:", data);
+          setProjects([]);
+        }
+      } catch (error) {
+        console.error("Erro ao buscar projetos:", error);
+        setProjects([]);
+      }
+    }
+
+    loadProjects();
+  }, []);
 
   return (
     <Layout titulo="Tela de cadastro">
       {alert.show && alert.title && (
-        <CustomAlert category={alert.category} title={alert.title} />
+        <CustomAlert category={alert.category} title={alert.title}  onClose={() => setAlert({ show: false })} />
       )}
       <form onSubmit={handleSubmit(onSubmit)} className={styles.container}>
-        <Card sx={{ p: 3,}}>
+        <Card sx={{ p: 3 }}>
           {/* Título: Dados do Usuário */}
           <Typography
             variant="h6"
