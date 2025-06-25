@@ -3,7 +3,7 @@ import axios, { AxiosResponse } from "axios";
 // Obtenha o token do localStorage ou de outro lugar, se necessário
 const getUserToken = () => localStorage.getItem("token") || "";
 
-const baseURL = `http://31.97.17.77:5443/keek-api`;
+const baseURL = `https://apoio-gestao.keekconecta.com.br/keek-api`;
 
 export const api = axios.create({
   baseURL,
