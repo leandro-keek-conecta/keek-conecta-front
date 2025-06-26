@@ -2,7 +2,9 @@ import { login } from "@/services/auth/authService";
 
 import styles from "./Login.module.css";
 import logoBayeux from "@/assets/bayeux.png";
-import logoDefault from "@/assets/logo_padrao.png"; // (adicione esse arquivo ou ajuste o caminho)
+import logoDefault from "@/assets/logo-padrao-branco.png"; 
+import gugaPet from "@/assets/guga-pet.jpeg"; 
+import cmjp from "@/assets/CMJP-PB.jpg"; 
 
 import { Box, Button, Checkbox, FormControlLabel, TextField, Typography, Link, InputAdornment, IconButton, CircularProgress } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
@@ -18,9 +20,17 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const { pathname } = useLocation();
 
-  const logoSrc = pathname === "/bayeux" ? logoBayeux : logoDefault;
+  const logoMap: Record<string, string> = {
+    "/bayeux": logoBayeux,
+    "/guga-pet": gugaPet,
+    "/conecta-cmjp": cmjp
+  };
+
+  const logoSrc = logoMap[pathname.toLowerCase()] || logoDefault;
+
 
   useEffect(() => {
+    localStorage.clear()
     setFormData({ email: "", password: "" });
   }, []);
 

@@ -18,6 +18,9 @@ const RoutesConfig = () => (
     <Routes>
       <Route path="/" element={<Login />} />
       <Route path="/bayeux" element={<Login />} />
+      <Route path="/guga-pet" element={<Login />} />
+      <Route path="/conecta-cmjp" element={<Login />} />
+
       {/* User */}
       <Route path="/home" element={<ProtectedRoute allowedRoles={["USER", "ADMIN", "SUPERADMIN"]}><Home /></ProtectedRoute>} />
       <Route path="/metricas" element={<ProtectedRoute allowedRoles={["USER", "ADMIN", "SUPERADMIN"]}><Metricas /></ProtectedRoute>} />
