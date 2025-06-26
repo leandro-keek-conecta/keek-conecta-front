@@ -41,7 +41,7 @@ export function Layout({
 }: PropriedadesLayout) {
   const [barraLateralAberta, setBarraLateralAberta] = useState(true);
   const [menuMobileAberto, setMenuMobileAberto] = useState(false);
-  const user =  JSON.parse(localStorage.getItem("user"))
+  const user = JSON.parse(localStorage.getItem("user"));
   // Se não deve mostrar a sidebar, renderiza apenas o conteúdo principal
   if (!mostrarSidebar) {
     return (
@@ -96,11 +96,20 @@ export function Layout({
             px: 2,
           }}
         >
-          <img
-            src={user.projeto.url? user.projeto.url : Logo}
-            alt="keekInteligencia"
-            style={{ height: "42px", width: "42px", borderRadius: "50%" }}
-          />
+          {user.id === 1 ? (
+            <img
+              src={Logo}
+              alt="keekInteligencia"
+              style={{ height: "42px", width: "42px", borderRadius: "50%" }}
+            />
+          ) : (
+            <img
+              src={user.projeto.url ? user.projeto.url : Logo}
+              alt="keekInteligencia"
+              style={{ height: "42px", width: "42px", borderRadius: "50%" }}
+            />
+          )}
+
           {barraLateralAberta && (
             <Box sx={{ ml: 1.5, display: "flex", flexDirection: "column" }}>
               <Typography
@@ -146,15 +155,20 @@ export function Layout({
         >
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <img
-              src={user.projeto.url? user.projeto.url : Logo}
+              src={user.projeto.url ? user.projeto.url : Logo}
               alt="keekInteligencia"
               style={{ height: "32px", width: "32px", borderRadius: "50%" }}
             />
             <Typography
               variant="subtitle1"
-              sx={{ ml: 1, fontWeight: "bold", color: "white", fontSize: "1rem"}}
+              sx={{
+                ml: 1,
+                fontWeight: "bold",
+                color: "white",
+                fontSize: "1rem",
+              }}
             >
-               {user.projeto.nome}
+              {user.projeto.nome}
             </Typography>
           </Box>
           <IconButton

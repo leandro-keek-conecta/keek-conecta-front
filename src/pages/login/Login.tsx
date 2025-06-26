@@ -77,12 +77,12 @@ export default function Login() {
         }
         else if(userRole.role === "ADMIN"){
           setTimeout(() => {
-            navigate("/superAdmin");
+            navigate("/projetos");
           }, 3000);
         }
         else if(userRole.role === "SUPERADMIN"){
           setTimeout(() => {
-            navigate("/superAdmin");
+            navigate("/projetos");
           }, 3000);
         }
       }

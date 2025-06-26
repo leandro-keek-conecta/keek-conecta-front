@@ -7,16 +7,22 @@ type CardProjectProps = {
   id: number;
   name: string;
   logoUrl?: string;
-  users?: [];
+  users?: User[];
   mentions: number;
   chartImgUrl?: string; // opcional para um gráfico como imagem
+};
+
+type User = {
+  id: number;
+  name: string;
+  email: string;
+  role: string;
 };
 
 export default function CardProject({
   id,
   name,
   logoUrl,
-  mentions,
   users,
   chartImgUrl,
 }: CardProjectProps) {
@@ -42,22 +48,27 @@ export default function CardProject({
         </Box>
         <Box className={styles.headerRight}>
           <Typography variant="h6">{name}</Typography>
-          <Typography variant="subtitle2">
+          {/*           <Typography variant="subtitle2">
             {mentions} menções nos últimos 7 dias
-          </Typography>
+          </Typography> */}
         </Box>
       </Box>
 
       <Box className={styles.content}>
-        {/*         {chartImgUrl && ( */}
-        <img
-          src={
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPrGHSpnQgqgPyLc_mKIb7SGHfN7eynQAw0g&s"
-          }
-          alt="Gráfico de menções"
+        {chartImgUrl && (
+         <iframe
+          src={chartImgUrl}
+          title={`Preview do projeto ${name}`}
           className={styles.chart}
+          style={{
+            border: "none",
+            width: "100%",
+            height: "200px", // ajuste conforme necessário
+            borderRadius: "8px",
+          }}
+          allowFullScreen
         />
-        {/*         )} */}
+        )}
       </Box>
 
       <Box className={styles.footer}>

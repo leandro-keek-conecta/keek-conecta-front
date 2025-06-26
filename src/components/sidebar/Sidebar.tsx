@@ -11,7 +11,7 @@ import {
 import { FormControl, Box } from "@mui/material";
 import SettingsIcon from "@mui/icons-material/Settings";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import InputLabel from "@mui/material/InputLabel";
+import ArticleIcon from '@mui/icons-material/Article';
 import MenuItem from "@mui/material/MenuItem";
 import styles from "./sidebar.module.css";
 import React, { useEffect, useState } from "react";
@@ -57,7 +57,7 @@ export function Sidebar({
       <ul className={styles.ulStyle}>
         {isAdminOrMore ? (
           <ItemMenu
-            icone={<AttachMoney />}
+            icone={<ArticleIcon />}
             rotulo="Projetos"
             para="/projetos"
             estaAberta={estaAberta}
@@ -65,7 +65,7 @@ export function Sidebar({
           />
         ) : (
           <ItemMenu
-            icone={<AttachMoney />}
+            icone={<ArticleIcon />}
             rotulo="Home"
             para="/home"
             estaAberta={estaAberta}
