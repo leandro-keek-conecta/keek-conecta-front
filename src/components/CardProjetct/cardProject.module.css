@@ -37,5 +37,14 @@
 
 .footer {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+}
+
+.avatars {
+  display: flex;
+  flex-direction: row;
+}
+
+.avatars :not(:first-child) {
+  margin-left: -10px;
 }
