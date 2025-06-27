@@ -2,7 +2,7 @@ import { login } from "@/services/auth/authService";
 
 import styles from "./Login.module.css";
 import logoBayeux from "@/assets/bayeux-white.png";
-import logoDefault from "@/assets/logo-padrao-branco.png";
+import logoDefault from "@/assets/logo-padrao.png";
 import gugaPet from "@/assets/guga-pet.png";
 import cmjp from "@/assets/CMJP-PB.png";
 import { ThemeProvider } from "@mui/material/styles";

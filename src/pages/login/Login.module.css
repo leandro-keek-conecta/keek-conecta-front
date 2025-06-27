@@ -42,7 +42,6 @@
   justify-content: center;
   align-items: center; /* Corrige o desalinhamento */
   text-align: center; /* Garante alinhamento do texto */
-  display: inline-flex;
   flex-direction: column;
   border-radius: 25px;
   color: rgb(0, 0, 0);
