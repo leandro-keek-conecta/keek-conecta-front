@@ -90,7 +90,7 @@ export const tema = createTheme({
 export const bayeuxTheme = createTheme({
   palette: {
     primary: {
-      main: "#0066cc",
+      main: "#1b7513",
     },
     background: {
       default: "#e3f2fd",
@@ -101,7 +101,7 @@ export const bayeuxTheme = createTheme({
 export const gugaPetTheme = createTheme({
   palette: {
     primary: {
-      main: "#ff4081",
+      main: "#4a6696",
     },
     background: {
       default: "#fff0f6",
@@ -112,7 +112,7 @@ export const gugaPetTheme = createTheme({
 export const cmjpTheme = createTheme({
   palette: {
     primary: {
-      main: "#388e3c",
+      main: "#00767c",
     },
     background: {
       default: "#e8f5e9",

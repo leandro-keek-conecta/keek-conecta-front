@@ -3,8 +3,8 @@ import { login } from "@/services/auth/authService";
 import styles from "./Login.module.css";
 import logoBayeux from "@/assets/bayeux-white.png";
 import logoDefault from "@/assets/logo-padrao-branco.png";
-import gugaPet from "@/assets/guga-pet.jpeg";
-import cmjp from "@/assets/CMJP-PB.jpg";
+import gugaPet from "@/assets/guga-pet.png";
+import cmjp from "@/assets/CMJP-PB.png";
 import { ThemeProvider } from "@mui/material/styles";
 import { themeMap, tema } from "../../theme.tsx"; // Nome correto
 
