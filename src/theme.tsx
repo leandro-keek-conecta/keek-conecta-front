@@ -1,8 +1,9 @@
 import { createTheme } from "@mui/material/styles";
 import "@fontsource/lato"; // Importa a fonte Lato
 
+
 // Tema personalizado para o keekInteligencia
-export const temaPlansan = createTheme({
+export const tema = createTheme({
   palette: {
     primary: {
       main: "#FF7A01", // Verde keekInteligencia
@@ -85,3 +86,42 @@ export const temaPlansan = createTheme({
     },
   },
 });
+
+export const bayeuxTheme = createTheme({
+  palette: {
+    primary: {
+      main: "#1b7513",
+    },
+    background: {
+      default: "#e3f2fd",
+    },
+  },
+});
+
+export const gugaPetTheme = createTheme({
+  palette: {
+    primary: {
+      main: "#4a6696",
+    },
+    background: {
+      default: "#fff0f6",
+    },
+  },
+});
+
+export const cmjpTheme = createTheme({
+  palette: {
+    primary: {
+      main: "#00767c",
+    },
+    background: {
+      default: "#e8f5e9",
+    },
+  },
+});
+
+export const themeMap: Record<string, ReturnType<typeof createTheme>> = {
+  "/bayeux": bayeuxTheme,
+  "/guga-pet": gugaPetTheme,
+  "/conecta-cmjp": cmjpTheme,
+};

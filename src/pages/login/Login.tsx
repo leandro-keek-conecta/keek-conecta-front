@@ -1,12 +1,25 @@
 import { login } from "@/services/auth/authService";
 
 import styles from "./Login.module.css";
-import logoBayeux from "@/assets/bayeux.png";
-import logoDefault from "@/assets/logo-padrao-branco.png"; 
-import gugaPet from "@/assets/guga-pet.jpeg"; 
-import cmjp from "@/assets/CMJP-PB.jpg"; 
+import logoBayeux from "@/assets/bayeux-white.png";
+import logoDefault from "@/assets/logo-padrao.png";
+import gugaPet from "@/assets/guga-pet.png";
+import cmjp from "@/assets/CMJP-PB.png";
+import { ThemeProvider } from "@mui/material/styles";
+import { themeMap, tema } from "../../theme.tsx"; // Nome correto
 
-import { Box, Button, Checkbox, FormControlLabel, TextField, Typography, Link, InputAdornment, IconButton, CircularProgress } from "@mui/material";
+import {
+  Box,
+  Button,
+  Checkbox,
+  FormControlLabel,
+  TextField,
+  Typography,
+  Link,
+  InputAdornment,
+  IconButton,
+  CircularProgress,
+} from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import UserLogin from "@/@types/userLogin";
@@ -23,14 +36,14 @@ export default function Login() {
   const logoMap: Record<string, string> = {
     "/bayeux": logoBayeux,
     "/guga-pet": gugaPet,
-    "/conecta-cmjp": cmjp
+    "/conecta-cmjp": cmjp,
   };
 
   const logoSrc = logoMap[pathname.toLowerCase()] || logoDefault;
-
+  const temaAtual = themeMap[pathname.toLowerCase()] || tema;
 
   useEffect(() => {
-    localStorage.clear()
+    localStorage.clear();
     setFormData({ email: "", password: "" });
   }, []);
 
@@ -70,17 +83,15 @@ export default function Login() {
           title: "Login Feito Com Sucesso!",
         });
 
-        if(userRole.role === "USER"){
+        if (userRole.role === "USER") {
           setTimeout(() => {
             navigate("/home");
           }, 3000);
-        }
-        else if(userRole.role === "ADMIN"){
+        } else if (userRole.role === "ADMIN") {
           setTimeout(() => {
             navigate("/projetos");
           }, 3000);
-        }
-        else if(userRole.role === "SUPERADMIN"){
+        } else if (userRole.role === "SUPERADMIN") {
           setTimeout(() => {
             navigate("/projetos");
           }, 3000);
@@ -110,40 +121,26 @@ export default function Login() {
   };
 
   return (
-    <Box className={styles.loginContainer}>
-      {alert.show && alert.title && (
-        <CustomAlert category={alert.category} title={alert.title} />
-      )}
-      <Box className={styles.containerLeft}>
-        <Box className={styles.logo}>
-          <img src={logoSrc} alt="Logo" style={{ maxWidth: "200px" }} />
-        </Box>
-        <Box className={styles.titleSubtitle}>
-          <Typography variant="h3" fontWeight="bold" color="white">
-            Plataforma de Apoio
-            <br />à Tomada de Decisão
-          </Typography>
-          <Typography variant="body1" color="white" mt={2}>
-            Um ecossistema de soluções inteligentes e integradas que garantem
-            resultados eficientes
-          </Typography>
-        </Box>
-        <Box className={styles.aboutButtom}>
-          <Button variant="contained" sx={{ bgcolor: "#f57c00" }}>
-            Saiba Mais
-          </Button>
-        </Box>
-      </Box>
+    <ThemeProvider theme={temaAtual}>
+      <Box className={styles.loginContainer}>
+        {alert.show && alert.title && (
+          <CustomAlert category={alert.category} title={alert.title} />
+        )}
 
-      {/* Lado direito - Formulário */}
-      <Box className={styles.containerRight}>
         <Box className={styles.loginForm}>
           <Box className={styles.titleForm}>
+            <Box
+              className={styles.logo}
+              style={{ backgroundColor: temaAtual.palette.primary.main }}
+            >
+              <img
+                src={logoSrc}
+                alt="Logo"
+                style={{ width: "auto", height: "9rem" }}
+              />
+            </Box>
             <Typography fontWeight="bold" mb={2} className={styles.title}>
               Tela de acesso
-            </Typography>
-            <Typography variant="body2" mb={3} className={styles.subtitle}>
-              Faça seu login para acessar todas as funcionalidades
             </Typography>
           </Box>
           <form className={styles.form} onSubmit={onSubmit}>
@@ -169,11 +166,9 @@ export default function Login() {
                 shrink: true,
                 style: {
                   color: "#333",
-                  fontSize: "1.5rem", // tamanho equilibrado
+                  fontSize: "1.1rem", // tamanho equilibrado
                   fontWeight: 500,
-                  top: "0.3rem",
                   borderRadius: "8px",
-                  padding: "0.1rem",
                 },
               }}
             />
@@ -205,11 +200,9 @@ export default function Login() {
                 shrink: true, // <-- mantém o label sempre acima
                 style: {
                   color: "#333",
-                  fontSize: "1.5rem", // tamanho equilibrado
+                  fontSize: "1.1rem", // tamanho equilibrado
                   fontWeight: 500,
-                  top: "0.3rem",
                   borderRadius: "8px",
-                  padding: "0.1rem",
                 },
               }}
             />
@@ -233,7 +226,8 @@ export default function Login() {
             <Button
               variant="contained"
               fullWidth
-              sx={{ bgcolor: "#f57c00", py: 1.2 }}
+              style={{ backgroundColor: temaAtual.palette.primary.main }}
+              sx={{ py: 1.2 }}
               type="submit"
             >
               {loading ? (
@@ -245,6 +239,6 @@ export default function Login() {
           </form>
         </Box>
       </Box>
-    </Box>
+    </ThemeProvider>
   );
 }

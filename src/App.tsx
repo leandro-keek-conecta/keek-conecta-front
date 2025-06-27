@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider, CssBaseline } from "@mui/material";
-import { temaPlansan } from "./theme";
+import { tema } from "./theme";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -15,7 +15,7 @@ register(); // Registra os elementos do Swiper
 
 const App = () => (
   <QueryClientProvider client={clienteQuery}>
-    <ThemeProvider theme={temaPlansan}>
+    <ThemeProvider theme={tema}>
       <CssBaseline />
       <BrowserRouter>
           <RoutesConfig /> {/* Usa o componente de rotas */}
