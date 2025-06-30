@@ -7,12 +7,13 @@ export default function Metricas() {
 
   return (
     <Layout titulo="Apresentação e Introdução">
-      <iframe
+{/*       <iframe
         className={styles.iframe}
         src={url}
         allowFullScreen
         title="Apresentação YouTube"
-      />
+      /> */}
+      <p>Tela de Métricas </p>
     </Layout>
   );
 }

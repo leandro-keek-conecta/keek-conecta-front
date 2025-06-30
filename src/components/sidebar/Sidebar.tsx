@@ -2,7 +2,6 @@
 import { useNavigate } from "react-router-dom";
 import FolderIcon from "@mui/icons-material/Folder";
 import {
-  AttachMoney,
   FormatListNumbered,
   Info,
   Description,
@@ -56,6 +55,7 @@ export function Sidebar({
     <nav className={styles.sidebarNav}>
       <ul className={styles.ulStyle}>
         {isAdminOrMore ? (
+          <>
           <ItemMenu
             icone={<ArticleIcon />}
             rotulo="Projetos"
@@ -63,6 +63,14 @@ export function Sidebar({
             estaAberta={estaAberta}
             onClick={isMobile ? aoFechar : undefined}
           />
+          <ItemMenu
+          icone={<Description  />}
+          rotulo="Cadastro de usuários"
+          para="/cadastro"
+          estaAberta={estaAberta}
+          onClick={isMobile ? aoFechar : undefined}
+        />
+        </>
         ) : (
           <ItemMenu
             icone={<ArticleIcon />}
@@ -80,6 +88,7 @@ export function Sidebar({
           estaAberta={estaAberta}
           onClick={isMobile ? aoFechar : undefined}
         />
+
         <ItemMenu
           icone={<Info />}
           rotulo="Estatísticas"
@@ -115,8 +124,8 @@ export function Sidebar({
 
                 // Exibir o label normal do MenuItem selecionado
                 const selectedOption = {
-                  /*                   "/admin/opcoes": "Opções Administrador",*/
-                  "/cadastro": "Tela de cadatro",
+                  /*"/admin/opcoes": "Opções Administrador", "/cadastro": "Tela de cadatro",*/
+
                   "/": "Sair",
                 };
 
@@ -125,8 +134,8 @@ export function Sidebar({
             >
               {/*               <MenuItem value="/admin/opcoes" sx={{ fontSize: "1rem" }}>
                 Opções Administrador
-              </MenuItem> */}
-              {isAdminOrMore?(
+              </MenuItem> 
+                         {isAdminOrMore?(
                 <MenuItem value="/cadastro" sx={{ fontSize: "1rem" }}>
                 Tela de Cadastro
               </MenuItem>
@@ -134,6 +143,8 @@ export function Sidebar({
                 <></>
               )}
               
+              */}
+   
               <MenuItem value="/" sx={{ fontSize: "1rem" }} onClick={logout}>
                 Sair
               </MenuItem>

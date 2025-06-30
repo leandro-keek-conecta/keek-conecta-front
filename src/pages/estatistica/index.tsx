@@ -7,12 +7,14 @@ export default function Estatisticas() {
 
   return (
     <Layout titulo="Apresentação e Introdução">
-      <iframe
+{/*       <iframe
         className={styles.iframe}
         src={url}
         allowFullScreen
-        title="Apresentação YouTube"
-      />
+        title=
+        "Apresentação YouTube"
+      /> */}
+       <p>Tela de Estatisticas</p>
     </Layout>
   );
 }
