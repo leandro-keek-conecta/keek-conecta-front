@@ -25,6 +25,9 @@ export default function Register() {
   const [openModal, setOpenModal] = useState(false);
   const [newProjectName, setNewProjectName] = useState("");
   const [newProjectLogo, setNewProjectLogo] = useState("");
+  const [newProjectDashUrl, setNewProjectDashUrl] = useState("");
+  const [newProjectCorHex, setNewProjectCorHex] = useState("#000000");
+  const [projects, setProjects] = useState<ProjectDTO[]>([]);
 
   const handleCreateProject = async () => {
     if (!newProjectName || !newProjectLogo) {
@@ -40,6 +43,8 @@ export default function Register() {
       await createProject({
         name: newProjectName,
         logoUrl: newProjectLogo,
+        dashUrl: newProjectDashUrl,
+        corHex: newProjectCorHex
       });
 
       setAlert({
@@ -65,17 +70,19 @@ export default function Register() {
   const {
     control,
     handleSubmit,
+     watch, 
+     setValue,
     reset,
     formState: { errors },
   } = useForm();
-  const [projects, setProjects] = useState<ProjectDTO[]>([]);
   const projectInputList = Array.isArray(projects)
     ? projects.map((project) => ({
         label: project.name,
         value: project.id,
       }))
     : [];
-
+    
+  const selectedProjectId = watch("projectName");
   const projectInputs: InputType[] = [
     {
       name: "projectName",
@@ -88,8 +95,24 @@ export default function Register() {
     },
     {
       name: "projectLogoUrl",
-      title: "url",
+      title: "Url",
       placeholder: "Digite a URL da logo do projeto",
+      type: "text",
+      colSpan: 6,
+      rules: { required: "URL da logo é obrigatória" },
+    },
+    {
+      name: "dashUrl",
+      title: "Url do dash",
+      placeholder: "Digite a URL de acesso ao dash",
+      type: "text",
+      colSpan: 6,
+      rules: { required: "URL da logo é obrigatória" },
+    },
+    {
+      name: "corHex",
+      title: "Cor Padrão do Projeto",
+      placeholder: "Selecione a Cor Padrão do Projeto",
       type: "text",
       colSpan: 6,
       rules: { required: "URL da logo é obrigatória" },
@@ -105,15 +128,7 @@ export default function Register() {
     category: undefined,
     title: undefined,
   });
-  useEffect(() => {
-    if (alert.show) {
-      const timeout = setTimeout(() => {
-        setAlert({ show: false });
-      }, 5000); // 5 segundos
 
-      return () => clearTimeout(timeout); // limpa o timeout se desmontar
-    }
-  }, [alert.show]);
   async function onSubmit(data: any) {
     const userData = {
       email: data.email,
@@ -158,24 +173,36 @@ export default function Register() {
     }
   }
 
-  useEffect(() => {
+   useEffect(() => {
     async function loadProjects() {
       try {
         const data = await fetchProjects();
-        if (Array.isArray(data)) {
-          setProjects(data);
-        } else {
-          console.error("Dados recebidos não são um array:", data);
-          setProjects([]);
-        }
+        if (Array.isArray(data)) setProjects(data);
       } catch (error) {
         console.error("Erro ao buscar projetos:", error);
-        setProjects([]);
       }
     }
 
     loadProjects();
   }, []);
+
+  useEffect(() => {
+    if (selectedProjectId) {
+      const selected = projects.find((p) => p.id === selectedProjectId);
+      if (selected) {
+        setValue("projectLogoUrl", selected.logoUrl);
+        setValue("dashUrl", selected.dashUrl);
+        setValue("corHex", selected.corHex);
+      }
+    }
+  }, [selectedProjectId, projects, setValue]);
+
+  useEffect(() => {
+    if (alert.show) {
+      const timeout = setTimeout(() => setAlert({ show: false }), 5000);
+      return () => clearTimeout(timeout);
+    }
+  }, [alert.show]);
 
   return (
     <Layout titulo="Tela de cadastro">
@@ -203,6 +230,20 @@ export default function Register() {
               value={newProjectLogo}
               onChange={(e) => setNewProjectLogo(e.target.value)}
               required
+            />
+            <TextField
+              label="URL do Dash"
+              value={newProjectDashUrl}
+              onChange={(e) => setNewProjectDashUrl(e.target.value)}
+              required
+            />
+            <TextField
+              label="Cor padrão do Projeto"
+              type="color"
+              value={newProjectCorHex}
+              onChange={(e) => setNewProjectCorHex(e.target.value)}
+              InputLabelProps={{ shrink: true }}
+              fullWidth
             />
           </Box>
         </DialogContent>

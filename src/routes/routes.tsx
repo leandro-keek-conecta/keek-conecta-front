@@ -22,15 +22,15 @@ const RoutesConfig = () => (
       <Route path="/conecta-cmjp" element={<Login />} />
 
       {/* User */}
-      <Route path="/home" element={<ProtectedRoute allowedRoles={["USER", "ADMIN", "SUPERADMIN"]}><Home /></ProtectedRoute>} />
-      <Route path="/metricas" element={<ProtectedRoute allowedRoles={["USER", "ADMIN", "SUPERADMIN"]}><Metricas /></ProtectedRoute>} />
-      <Route path="/estatisticas" element={<ProtectedRoute allowedRoles={["USER", "ADMIN", "SUPERADMIN"]}><Estatisticas /></ProtectedRoute>} />
+      <Route path="/home" element={<ProtectedRoute allowedRoles={["USER", "ADMIN"]}><Home /></ProtectedRoute>} />
+      <Route path="/metricas" element={<ProtectedRoute allowedRoles={["USER", "ADMIN"]}><Metricas /></ProtectedRoute>} />
+      <Route path="/estatisticas" element={<ProtectedRoute allowedRoles={["USER", "ADMIN"]}><Estatisticas /></ProtectedRoute>} />
 
       {/* Admin, superAdmin */}
-      <Route path="/superAdmin" element={<ProtectedRoute allowedRoles={["SUPERADMIN"]}><SuperAdmin /></ProtectedRoute>} />
-      <Route path="/cadastro" element={<ProtectedRoute allowedRoles={["SUPERADMIN", "ADMIN"]}><Register /></ProtectedRoute>} />
-      <Route path="/projetos" element={<ProtectedRoute allowedRoles={["SUPERADMIN"]}><Projects /></ProtectedRoute>} />
-      <Route path="/projeto/:id" element={<ProtectedRoute allowedRoles={["SUPERADMIN"]}><ProjectAcess /></ProtectedRoute>} />
+      <Route path="/superAdmin" element={<ProtectedRoute allowedRoles={["ADMIN"]}><SuperAdmin /></ProtectedRoute>} />
+      <Route path="/cadastro" element={<ProtectedRoute allowedRoles={["ADMIN"]}><Register /></ProtectedRoute>} />
+      <Route path="/projetos" element={<ProtectedRoute allowedRoles={["ADMIN"]}><Projects /></ProtectedRoute>} />
+      <Route path="/projeto/:id" element={<ProtectedRoute allowedRoles={["ADMIN"]}><ProjectAcess /></ProtectedRoute>} />
 
       {/* Rota para NotFound */}
       <Route path="*" element={<NotFound />} />

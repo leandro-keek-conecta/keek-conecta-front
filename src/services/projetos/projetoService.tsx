@@ -4,6 +4,8 @@ export interface ProjectDTO {
   id: number;
   name: string;
   logoUrl?: string | null;
+  dashUrl?: string | null;
+  corHex?: string | null;
 }
 
 /** GET /projetos – lista todos */

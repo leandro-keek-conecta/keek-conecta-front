@@ -26,12 +26,14 @@ import UserLogin from "@/@types/userLogin";
 import { useLocation, useNavigate } from "react-router-dom";
 import CustomAlert from "@/components/Alert";
 import { useAuth } from "@/context/AuthContext";
+import { useDynamicTheme } from "@/context/ThemeContext.tsx";
 
 export default function Login() {
   const [mostraSenha, setMostraSenha] = useState(false);
   const { setUser } = useAuth();
   const [loading, setLoading] = useState(false);
   const { pathname } = useLocation();
+    const { updateThemeColor } = useDynamicTheme();
 
   const logoMap: Record<string, string> = {
     "/bayeux": logoBayeux,
@@ -71,7 +73,7 @@ export default function Login() {
       password: formData.password,
     };
     try {
-      const response = await login(data);
+      const response = await login(data, updateThemeColor);
 
       if (response.status === 200) {
         const userRole = response.data.response.user;

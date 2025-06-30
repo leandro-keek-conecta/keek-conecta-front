@@ -39,7 +39,7 @@ export default function Projects() {
           <Grid container spacing={3}>
             {projetos.map((project) => (
               <Grid item xs={12} md={6} key={project.id}>
-                <CardProject chartImgUrl={urlMap[project.id]} userName={project.users} {...project || []} />
+                <CardProject chartImgUrl={project.dashUrl?? "https://app.powerbi.com/view?r=eyJrIjoiMjI4YjIwOGQtOTE2Zi00ZjU2LTg1OTAtNDM0YjcxZTQ1OGVjIiwidCI6ImZkNGQ4Y2U1LWQ2ZDQtNGQzNy04ZWZhLWNkMzQ1YWUzNzVhOCJ9"} userName={project.users} {...project || []} />
               </Grid>
             ))}
           </Grid>

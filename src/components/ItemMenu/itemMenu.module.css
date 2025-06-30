@@ -10,14 +10,13 @@
 }
 
 .menuItem:hover {
-  background-color: #ee86524f;
+  background-color: rgba(0,0,0,0.05); /* cor neutra */
 }
 
-.ativo  {
-  background-color: #FF7A01; /* Cor de fundo para o item ativo */
-  font-weight: bold; /* Destaca o texto do item ativo */
-  color: white; /* Cor do texto para o item ativo */
+.ativo {
+  font-weight: bold;
   text-decoration: underline;
+  /* Remova a cor fixa, deixe o componente decidir via inline style */
 }
 
 .icon {
