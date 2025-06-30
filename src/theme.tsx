@@ -1,18 +1,17 @@
 import { createTheme } from "@mui/material/styles";
-import "@fontsource/lato"; // Importa a fonte Lato
+import "@fontsource/lato";
 
-
-// Tema personalizado para o keekInteligencia
-export const tema = createTheme({
+// Tema padrão para keekInteligencia (será usado se não houver cor de projeto definida)
+export const defaultTheme = createTheme({
   palette: {
     primary: {
-      main: "#FF7A01", // Verde keekInteligencia
+      main: "#FF7A01", // Cor padrão (verde keekInteligencia)
       light: "#5ba55e",
       dark: "#EE8552",
       contrastText: "#ffffff",
     },
     secondary: {
-      main: "#f5f5f5", // Cinza claro para o fundo
+      main: "#f5f5f5",
       light: "#ffffff",
       dark: "#e0e0e0",
       contrastText: "#333333",
@@ -27,7 +26,7 @@ export const tema = createTheme({
     },
   },
   typography: {
-    fontFamily: "'Lato', 'Roboto', 'Helvetica', 'Arial', sans-serif", // Define Lato como padrão
+    fontFamily: "'Lato', 'Roboto', 'Helvetica', 'Arial', sans-serif",
     h5: {
       fontWeight: 600,
     },
@@ -52,7 +51,7 @@ export const tema = createTheme({
         },
         containedPrimary: {
           "&:hover": {
-            backgroundColor: "EE8552",
+            backgroundColor: "#EE8552", // Use a cor escura ou uma variação
           },
         },
       },
@@ -87,6 +86,21 @@ export const tema = createTheme({
   },
 });
 
+// Função para criar um tema com uma cor primária dinâmica
+export const createDynamicTheme = (primaryColor: string) =>
+  createTheme({
+    ...defaultTheme,
+    palette: {
+      ...defaultTheme.palette,
+      primary: {
+        main: primaryColor,
+        contrastText: defaultTheme.palette.primary.contrastText,
+      },
+    },
+  });
+
+
+// Mantenha os outros temas se ainda forem usados por rotas específicas
 export const bayeuxTheme = createTheme({
   palette: {
     primary: {
@@ -125,3 +139,5 @@ export const themeMap: Record<string, ReturnType<typeof createTheme>> = {
   "/guga-pet": gugaPetTheme,
   "/conecta-cmjp": cmjpTheme,
 };
+
+export const tema = defaultTheme;

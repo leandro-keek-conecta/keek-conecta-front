@@ -2,28 +2,27 @@ import { useAuth } from "@/context/AuthContext";
 import UserLogin from "../../@types/userLogin";
 import { api } from "@/services/api/api";
 
-export async function login(data: UserLogin) {
-    
+export async function login(data: UserLogin, updateThemeColor: (color: string) => void) {
   try {
     const response = await api.post("/auth/login", data);
 
-    // Armazena o token no localStorage após o login
     if (response.data.response.accessToken) {
       localStorage.setItem("token", response.data.response.accessToken);
     }
 
-
-    // Armazena os dados do usuário no localStorage
     if (response.data.response.user) {
-      const userRole = response.data.response.user
-      localStorage.setItem("user", JSON.stringify(userRole)); // Serializa o objeto
+      const userRole = response.data.response.user;
+      localStorage.setItem("user", JSON.stringify(userRole));
+
+      // Aqui atualiza imediatamente após login
+      const corHex = userRole.projeto.corHex;
+      updateThemeColor(corHex);
     }
 
-    return response; // Retorna os dados recebidos da API
+    return response;
   } catch (error: any) {
-    const message =
-      error.response?.data?.message || "Erro ao conectar ao servidor";
-    throw new Error(message); // Retorna uma mensagem de erro clara
+    const message = error.response?.data?.message || "Erro ao conectar ao servidor";
+    throw new Error(message);
   }
 }
 

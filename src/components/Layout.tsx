@@ -42,6 +42,14 @@ export function Layout({
   const [barraLateralAberta, setBarraLateralAberta] = useState(true);
   const [menuMobileAberto, setMenuMobileAberto] = useState(false);
   const user = JSON.parse(localStorage.getItem("user"));
+  const userNameFiltered = user.name
+    .split(" ")                    // Divide o nome completo por espaços
+    .filter(palavra => palavra.length > 2)  // Remove palavras com 2 caracteres ou menos
+    .slice(0, 2)                   // Limita o resultado para até 3 palavras
+    .join(" ");                    // Junta as palavras novamente
+
+  console.log(userNameFiltered);
+  const color = user.projeto.corHex
   // Se não deve mostrar a sidebar, renderiza apenas o conteúdo principal
   if (!mostrarSidebar) {
     return (
@@ -91,7 +99,7 @@ export function Layout({
           sx={{
             display: "flex",
             alignItems: "center",
-            backgroundColor: "#FF7A01",
+            backgroundColor: `${color}`,
             height: "15vh",
             px: 2,
           }}
@@ -120,9 +128,9 @@ export function Layout({
               </Typography>
               <Typography
                 variant="body2"
-                sx={{ color: "#1A3365", fontWeight: 700, fontSize: "1rem" }}
+                sx={{ color: "white", fontWeight: 700, fontSize: "1rem" }}
               >
-                {user.name}
+                {userNameFiltered}
               </Typography>
             </Box>
           )}
@@ -139,7 +147,7 @@ export function Layout({
         sx={{
           "& .MuiDrawer-paper": {
             width: "70vw",
-            bgcolor: "#FF7A01",
+            bgcolor: `${color}`,
           },
           display: { xs: "block", md: "none" },
         }}

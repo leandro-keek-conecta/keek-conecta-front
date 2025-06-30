@@ -32,7 +32,7 @@ export function Sidebar({
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
   const [tela, setTela] = useState("");
-  const isAdminOrMore = user?.role === "SUPERADMIN" || user?.role === "ADMIN";
+  const isAdminOrMore = user?.role === "ADMIN"? true: false;
 
   useEffect(() => {
     const root = document.getElementById("main-container");
@@ -126,9 +126,14 @@ export function Sidebar({
               {/*               <MenuItem value="/admin/opcoes" sx={{ fontSize: "1rem" }}>
                 Opções Administrador
               </MenuItem> */}
-              <MenuItem value="/cadastro" sx={{ fontSize: "1rem" }}>
+              {isAdminOrMore?(
+                <MenuItem value="/cadastro" sx={{ fontSize: "1rem" }}>
                 Tela de Cadastro
               </MenuItem>
+              ):(
+                <></>
+              )}
+              
               <MenuItem value="/" sx={{ fontSize: "1rem" }} onClick={logout}>
                 Sair
               </MenuItem>
