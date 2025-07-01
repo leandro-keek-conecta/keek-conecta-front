@@ -29,6 +29,7 @@
 
 .logo img {
   border-radius: 18px;
+  height: "9rem"
 }
 
 .titleSubtitle {
@@ -38,6 +39,7 @@
 
 .loginForm {
   display: flex;
+  width: 30rem;
   flex-direction: column;
   justify-content: center;
   align-items: center; /* Corrige o desalinhamento */
@@ -70,14 +72,6 @@
   width: 100%;
 }
 
-.subtitle {
-  font-family: "Lato", sans-serif;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-  font-size: 1.2rem !important;
-}
-
 @media screen and (max-width: 768px) {
   .loginContainer {
     flex-direction: column;
@@ -87,6 +81,16 @@
   .loginForm {
     align-items: center;
     text-align: center;
+    width: 22rem;
+  }
+
+  .title {
+    color: #000000;
+    font-size: 1.5rem !important;
+    width: 100%;
+  }
+  .logo {
+    height: 5rem;
   }
 
   .titleForm {

@@ -138,7 +138,7 @@ export default function Login() {
               <img
                 src={logoSrc}
                 alt="Logo"
-                style={{ width: "auto", height: "9rem" }}
+                style={{ width: "auto", height: "7rem" }}
               />
             </Box>
             <Typography fontWeight="bold" mb={2} className={styles.title}>
