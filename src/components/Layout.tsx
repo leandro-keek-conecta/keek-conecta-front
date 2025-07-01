@@ -112,7 +112,7 @@ export function Layout({
             />
           ) : (
             <img
-              src={user.projeto.url ? user.projeto.url : Logo}
+              src={user.projeto.logoUrl ? user.projeto.logoUrl : Logo}
               alt="keekInteligencia"
               style={{ height: "42px", width: "42px", borderRadius: "50%" }}
             />
