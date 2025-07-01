@@ -11,6 +11,7 @@ import Projects from '@/pages/projects';
 import ProjectAcess from '@/pages/projectAcess';
 import Metricas from '@/pages/metricas';
 import Estatisticas from '@/pages/estatistica';
+import ProjectRegister from '@/pages/projectRegister';
 
 
 const RoutesConfig = () => (
@@ -31,6 +32,7 @@ const RoutesConfig = () => (
       <Route path="/cadastro" element={<ProtectedRoute allowedRoles={["ADMIN"]}><Register /></ProtectedRoute>} />
       <Route path="/projetos" element={<ProtectedRoute allowedRoles={["ADMIN"]}><Projects /></ProtectedRoute>} />
       <Route path="/projeto/:id" element={<ProtectedRoute allowedRoles={["ADMIN"]}><ProjectAcess /></ProtectedRoute>} />
+      <Route path="/cadastro-projeto" element={<ProtectedRoute allowedRoles={["ADMIN"]}><ProjectRegister /></ProtectedRoute>} />
 
       {/* Rota para NotFound */}
       <Route path="*" element={<NotFound />} />
