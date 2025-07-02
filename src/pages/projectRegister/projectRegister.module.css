@@ -1,19 +1,42 @@
-.bottomContainer {
-  width: 100%;
+.bottonContainer {
   display: flex;
-  align-items: center;
   justify-content: center;
+  margin-top: 2rem;
 }
 
-.buttom {
-  background-color: #FF7A01;
+.button {
+  background-color: #ff7a01;
   padding: 0.5rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  border: none;
+  width: 8rem;
   border-radius: 8px;
-  color: #f2f2f2 !important;
+  color: #fff;
   font-family: "Lato", sans-serif;
   font-weight: 500;
   font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #e56a00;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .bottonContainer {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0 1rem;
+  }
+
+  .button {
+    width: 100%;
+    font-size: 0.95rem;
+  }
+
+  .MuiDataGrid-root {
+    font-size: 0.85rem !important;
+  }
 }
 

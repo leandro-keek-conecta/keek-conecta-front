@@ -3,15 +3,31 @@ import Forms from "@/components/Forms";
 import { Layout } from "@/components/Layout";
 import { useForm } from "react-hook-form";
 import { projectInputs } from "./inputProject/projectInputList";
-import { Box, Card, Typography, CircularProgress, Button } from "@mui/material";
+import { Box, Card, Typography, CircularProgress } from "@mui/material";
 import { useEffect, useState } from "react";
-import { createProject } from "@/services/projetos/projetoService";
+import {
+  createProject,
+  fetchProjects,
+  ProjectDTO,
+  updateProject,
+} from "@/services/projetos/projetoService";
 import { logout } from "@/services/auth/authService";
 import CustomAlert from "@/components/Alert";
+import { GenericDataTable } from "@/components/DataTable";
+import { columnsProject } from "./colunsOfData/colunsProjectData";
 
 export default function ProjectRegister() {
-  const { control,handleSubmit,watch,setValue,reset,formState: { errors }} = useForm();
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    reset,
+    formState: { errors },
+  } = useForm();
   const [loading, setLoading] = useState(false);
+  const [projects, setProjects] = useState<ProjectDTO[]>([]);
+  const [projectSelected, setProjectSelected] = useState<ProjectDTO | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
   const [alert, setAlert] = useState<{
     show: boolean;
     category?: "success" | "error" | "info" | "warning";
@@ -28,6 +44,20 @@ export default function ProjectRegister() {
       return () => clearTimeout(timeout);
     }
   }, [alert.show]);
+
+  useEffect(() => {
+    loadProjects();
+  }, []);
+
+  async function loadProjects() {
+    try {
+      const data = await fetchProjects();
+      if (Array.isArray(data)) setProjects(data);
+    } catch (error) {
+      console.error("Erro ao buscar projetos:", error);
+    }
+  }
+
   async function onSubmit(data: any) {
     const projectData = {
       name: data.name,
@@ -38,15 +68,30 @@ export default function ProjectRegister() {
 
     try {
       setLoading(true);
-      await createProject(projectData);
 
-      setAlert({
-        show: true,
-        category: "success",
-        title: "Projeto cadastrado com sucesso!",
-      });
+      if (isEditing && projectSelected) {
+        await updateProject( {
+          id: projectSelected.id,
+          ...projectData
+        });
+        setAlert({
+          show: true,
+          category: "success",
+          title: "Projeto atualizado com sucesso!",
+        });
+      } else {
+        await createProject(projectData);
+        setAlert({
+          show: true,
+          category: "success",
+          title: "Projeto cadastrado com sucesso!",
+        });
+      }
 
-      reset(); // limpa o formulário após sucesso
+      reset();
+      setIsEditing(false);
+      setProjectSelected(null);
+      await loadProjects();
     } catch (error: any) {
       const errorMsg = error.message || "Erro desconhecido";
 
@@ -60,12 +105,20 @@ export default function ProjectRegister() {
         errorMsg.includes("não autorizado") ||
         errorMsg.includes("não tem permissão")
       ) {
-        // Ação automática se não autorizado
         logout();
       }
     } finally {
       setLoading(false);
     }
+  }
+
+  function handleEdit(row: ProjectDTO) {
+    setProjectSelected(row);
+    setIsEditing(true);
+    setValue("name", row.name);
+    setValue("logoUrl", row.logoUrl || "");
+    setValue("dashUrl", row.dashUrl || "");
+    setValue("corHex", row.corHex || "");
   }
 
   return (
@@ -77,27 +130,47 @@ export default function ProjectRegister() {
           onClose={() => setAlert({ show: false })}
         />
       )}
+
       <Card sx={{ p: 3, m: 2 }}>
         <Typography
           variant="h6"
           fontWeight="bold"
           sx={{ mb: 2, textAlign: "center", pb: "1rem" }}
         >
-          Dados do Projeto
+          {isEditing ? "Editar Projeto" : "Dados do Projeto"}
         </Typography>
+
         <form onSubmit={handleSubmit(onSubmit)} className={styles.container}>
           <Forms inputsList={projectInputs} control={control} errors={errors} />
-             <Box sx={{ mt: 4, mb: 2 }} className={styles.bottomContainer}>
-          <button type="submit" disabled={loading} className={styles.buttom}>
-            {loading ? (
-              <CircularProgress size={24} sx={{ color: "white" }} />
-            ) : (
-              "Cadastrar"
-            )}
-          </button>
-        </Box>
+
+          <Box sx={{ mt: 4 }} className={styles.bottonContainer}>
+            <button type="submit" disabled={loading} className={styles.button}>
+              {loading ? (
+                <CircularProgress size={24} sx={{ color: "white" }} />
+              ) : isEditing ? (
+                "Atualizar"
+              ) : (
+                "Cadastrar"
+              )}
+            </button>
+          </Box>
         </form>
-   
+      </Card>
+
+      <Card sx={{ m: 2, mb: 5 }}>
+        <GenericDataTable
+          rows={projects}
+          columns={columnsProject}
+          onEdit={handleEdit}
+          onDelete={(row) =>
+            setAlert({
+              show: true,
+              category: "success",
+              title: "Delete chamado com sucesso!",
+            })
+          }
+          hideActions={false}
+        />
       </Card>
     </Layout>
   );

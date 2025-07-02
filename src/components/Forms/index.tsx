@@ -1,3 +1,4 @@
+import styles from "./forms.module.css"
 import { Controller, FieldErrors } from "react-hook-form";
 import { Box } from "@mui/material";
 import InputTex from "../../components/InputText";
@@ -38,7 +39,7 @@ export default function Forms({
 
   return (
     <Box
-      className="form-container"
+      className={`form-container ${styles.smallInputs}`}
       sx={{
         display: "grid",
         gridTemplateColumns: "repeat(12, 1fr)", // 12 colunas fixas
