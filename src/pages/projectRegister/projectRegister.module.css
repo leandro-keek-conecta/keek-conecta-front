@@ -4,6 +4,25 @@
   margin-top: 2rem;
 }
 
+.buttonContainer {
+  max-height: 0;
+  display: flex;
+  justify-content: flex-start;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease, opacity 0.5s ease;
+}
+
+.visible {
+  max-height: 100px; /* Ajuste conforme necessário */
+  opacity: 1;
+}
+
+.hidden {
+  max-height: 0;
+  opacity: 0;
+}
+
 .button {
   background-color: #ff7a01;
   padding: 0.5rem;
@@ -16,6 +35,11 @@
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
+}
+
+.buttonContent {
+  background-color: #ff7a01 !important;
+  color: white !important;
 }
 
 .button:hover {
@@ -39,4 +63,3 @@
     font-size: 0.85rem !important;
   }
 }
-

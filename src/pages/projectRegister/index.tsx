@@ -3,7 +3,7 @@ import Forms from "@/components/Forms";
 import { Layout } from "@/components/Layout";
 import { useForm } from "react-hook-form";
 import { projectInputs } from "./inputProject/projectInputList";
-import { Box, Card, Typography, CircularProgress } from "@mui/material";
+import { Box, Card, Typography, CircularProgress, Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import {
   createProject,
@@ -15,6 +15,7 @@ import { logout } from "@/services/auth/authService";
 import CustomAlert from "@/components/Alert";
 import { GenericDataTable } from "@/components/DataTable";
 import { columnsProject } from "./colunsOfData/colunsProjectData";
+import { ModalDelete } from "./modalDelete";
 
 export default function ProjectRegister() {
   const {
@@ -26,8 +27,14 @@ export default function ProjectRegister() {
   } = useForm();
   const [loading, setLoading] = useState(false);
   const [projects, setProjects] = useState<ProjectDTO[]>([]);
-  const [projectSelected, setProjectSelected] = useState<ProjectDTO | null>(null);
+  const [projectSelected, setProjectSelected] = useState<ProjectDTO | null>(
+    null
+  );
   const [isEditing, setIsEditing] = useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [projectToDelete, setProjectToDelete] = useState<ProjectDTO | null>(
+    null
+  );
   const [alert, setAlert] = useState<{
     show: boolean;
     category?: "success" | "error" | "info" | "warning";
@@ -58,6 +65,11 @@ export default function ProjectRegister() {
     }
   }
 
+  function handlerCancelEdit() {
+    reset();
+    setIsEditing(false);
+  }
+
   async function onSubmit(data: any) {
     const projectData = {
       name: data.name,
@@ -70,9 +82,9 @@ export default function ProjectRegister() {
       setLoading(true);
 
       if (isEditing && projectSelected) {
-        await updateProject( {
+        await updateProject({
           id: projectSelected.id,
-          ...projectData
+          ...projectData,
         });
         setAlert({
           show: true,
@@ -130,8 +142,23 @@ export default function ProjectRegister() {
           onClose={() => setAlert({ show: false })}
         />
       )}
-
-      <Card sx={{ p: 3, m: 2 }}>
+      {projectToDelete && (
+        <ModalDelete
+          openModal={openDeleteModal}
+          setOpenModal={setOpenDeleteModal}
+          idProject={projectToDelete.id}
+          onDeleted={async () => {
+            setAlert({
+              show: true,
+              category: "success",
+              title: "Projeto deletado com sucesso!",
+            });
+            setProjectToDelete(null);
+            await loadProjects();
+          }}
+        />
+      )}
+      <Card sx={{ p: 2, m: 2 }}>
         <Typography
           variant="h6"
           fontWeight="bold"
@@ -157,21 +184,33 @@ export default function ProjectRegister() {
         </form>
       </Card>
 
-      <Card sx={{ m: 2, mb: 5 }}>
-        <GenericDataTable
-          rows={projects}
-          columns={columnsProject}
-          onEdit={handleEdit}
-          onDelete={(row) =>
-            setAlert({
-              show: true,
-              category: "success",
-              title: "Delete chamado com sucesso!",
-            })
-          }
-          hideActions={false}
-        />
-      </Card>
+      <Box>
+        <Box
+          sx={{ m: 2, mb: 0, textAlign: "center" }}
+          className={`${styles.buttonContainer} ${
+            isEditing ? styles.visible : styles.hidden
+          }`}
+        >
+          <Button
+            onClick={() => handlerCancelEdit()}
+            className={styles.buttonContent}
+          >
+            Cancelar edição
+          </Button>
+        </Box>
+        <Card sx={{ m: 2, mb: 5, mt: 0 }}>
+          <GenericDataTable
+            rows={projects}
+            columns={columnsProject}
+            onEdit={handleEdit}
+            onDelete={(row) => {
+              setProjectToDelete(row);
+              setOpenDeleteModal(true);
+            }}
+            hideActions={false}
+          />
+        </Card>
+      </Box>
     </Layout>
   );
 }

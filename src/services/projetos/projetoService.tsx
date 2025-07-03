@@ -24,3 +24,8 @@ export async function updateProject(data){
   const response= await api.patch<ProjectDTO>("/projeto/update", data);
   return response;
 }
+
+export async function deleteProject(id:number){
+  const response= await api.delete(`/projeto/delete/${id}`);
+  return response;
+}

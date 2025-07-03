@@ -17,7 +17,7 @@ import {
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { styled } from "@mui/material/styles";
 
-const rowHeight = Math.round(window.innerHeight * 0.056); // ~4vh
+const rowHeight = Math.round(window.innerHeight * 0.055); // ~4vh
 
 const WhiteDataGrid = styled(DataGrid)(({ theme }) => ({
   backgroundColor: "white",

@@ -24,7 +24,7 @@ export default function SelectButton({
   helperText = "",
 }: SelectTexProps) {
   const isMobile = useMediaQuery("(max-width:768px)");
-  const size = isMobile ? "3rem" : "3.5rem";
+  const size = isMobile ? "3rem" : "3rem";
   return (
     <Autocomplete
       options={options}
