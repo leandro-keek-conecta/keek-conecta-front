@@ -116,7 +116,6 @@ class LocalStorageService {
    * @returns string | null
    */
   getDashboardUrl(): string | null {
-    console.log(localStorage.getItem(LOCAL_STORAGE_KEYS.DASHBOARD_URL))
     return localStorage.getItem(LOCAL_STORAGE_KEYS.DASHBOARD_URL);
   }
 

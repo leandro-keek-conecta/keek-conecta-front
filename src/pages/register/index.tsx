@@ -1,88 +1,78 @@
 import styles from "./register.module.css";
 import Forms, { InputType } from "@/components/Forms";
 import { Layout } from "@/components/Layout";
-import { Box, Button, Card, CircularProgress, Typography } from "@mui/material";
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
-} from "@mui/material";
-import { createProject } from "@/services/projetos/projetoService";
-import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useForm, useWatch } from "react-hook-form";
 import { userInputs } from "./inputs/userInput";
-import { projectInputs } from "./inputs/projectInput";
-import { createUser } from "@/services/user/userService";
-import CustomAlert from "@/components/Alert";
+import { userInputsUpdate } from "./inputs/userInputUpdate";
+import { Box, Card, Typography, CircularProgress, Button } from "@mui/material";
+import { useEffect, useState } from "react";
 import { logout } from "@/services/auth/authService";
+import CustomAlert from "@/components/Alert";
+import { GenericDataTable } from "@/components/DataTable";
+import { columnsUsers } from "./colunsOfUsers/colunsUserData";
+import { Grid } from "@mui/material";
+import { useCallback } from "react";
+import {
+  createUser,
+  fetchUsers,
+  updateUser,
+} from "@/services/user/userService";
+import User from "@/@types/IUserType";
+import { Role } from "@/@types/IRoleType";
+import { projectInputs } from "./inputs/projectInput";
 import { fetchProjects, ProjectDTO } from "@/services/projetos/projetoService";
-import { ClassNames } from "@emotion/react";
+import { ModalUserDelete } from "./modalDelete";
+
+type RoleUser = "ADMIN" | "USER";
+
+type FormValues = {
+  id?: number;
+  name: string;
+  email: string;
+  profession: string;
+  role?: any;
+  password?: string;
+  projectName?: string;
+  projectLogoUrl?: string;
+};
 
 export default function Register() {
   const [loading, setLoading] = useState(false);
-  const [openModal, setOpenModal] = useState(false);
-  const [newProjectName, setNewProjectName] = useState("");
-  const [newProjectLogo, setNewProjectLogo] = useState("");
-  const [newProjectDashUrl, setNewProjectDashUrl] = useState("");
-  const [newProjectCorHex, setNewProjectCorHex] = useState("#000000");
+  const [isEditing, setIsEditing] = useState(false);
+  const [users, setUsers] = useState<User[]>([]);
   const [projects, setProjects] = useState<ProjectDTO[]>([]);
+  const [projectToDelete, setProjectToDelete] = useState<ProjectDTO | null>(
+    null
+  );
+  const [userToDelete, setUserToDelete] = useState<ProjectDTO | null>(null);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
-  const handleCreateProject = async () => {
-    if (!newProjectName || !newProjectLogo) {
-      setAlert({
-        show: true,
-        category: "warning",
-        title: "Preencha todos os campos do projeto",
-      });
-      return;
-    }
+  const [alert, setAlert] = useState<{
+    show: boolean;
+    category?: "success" | "error" | "info" | "warning";
+    title?: string;
+  }>({
+    show: false,
+    category: undefined,
+    title: undefined,
+  });
 
-    try {
-      await createProject({
-        name: newProjectName,
-        logoUrl: newProjectLogo,
-        dashUrl: newProjectDashUrl,
-        corHex: newProjectCorHex
-      });
+  const handleEditUser = useCallback((row: User) => {
+    changeForEdit(row);
+  }, []);
 
-      setAlert({
-        show: true,
-        category: "success",
-        title: "Projeto criado com sucesso!",
-      });
+  const handleDeleteUser = useCallback((row: any) => {
+    setUserToDelete(row);
+    setOpenDeleteModal(true);
+  }, []);
 
-      // Atualiza lista de projetos
-      const updatedProjects = await fetchProjects();
-      setProjects(updatedProjects);
-
-      // Limpa e fecha
-      setNewProjectName("");
-      setNewProjectLogo("");
-      setOpenModal(false);
-    } catch (error: any) {
-      const msg = error.message || "Erro ao criar projeto";
-      setAlert({ show: true, category: "error", title: msg });
-    }
-  };
-
-  const {
-    control,
-    handleSubmit,
-     watch, 
-     setValue,
-    reset,
-    formState: { errors },
-  } = useForm();
   const projectInputList = Array.isArray(projects)
     ? projects.map((project) => ({
         label: project.name,
         value: project.id,
       }))
     : [];
-    
-  const selectedProjectId = watch("projectName");
+
   const projectInputs: InputType[] = [
     {
       name: "projectName",
@@ -101,79 +91,41 @@ export default function Register() {
       colSpan: 6,
       rules: { required: "URL da logo é obrigatória" },
     },
-    {
-      name: "dashUrl",
-      title: "Url do dash",
-      placeholder: "Digite a URL de acesso ao dash",
-      type: "text",
-      colSpan: 6,
-      rules: { required: "URL da logo é obrigatória" },
-    },
-    {
-      name: "corHex",
-      title: "Cor Padrão do Projeto",
-      placeholder: "Selecione a Cor Padrão do Projeto",
-      type: "text",
-      colSpan: 6,
-      rules: { required: "URL da logo é obrigatória" },
-    },
   ];
 
-  const [alert, setAlert] = useState<{
-    show: boolean;
-    category?: "success" | "error" | "info" | "warning";
-    title?: string;
-  }>({
-    show: false,
-    category: undefined,
-    title: undefined,
+  const {
+    control: controlCreate,
+    handleSubmit: handleCreate,
+    reset: resetCreate,
+    watch,
+    formState: { errors: errorsCreate },
+    setValue: setValueCreate,
+  } = useForm<FormValues>({
+    defaultValues: { role: "USER" },
+    shouldUnregister: true,
   });
 
-  async function onSubmit(data: any) {
-    const userData = {
-      email: data.email,
-      password: data.password,
-      name: data.name,
-      role: data.role,
-      profession: data.profession,
-      projeto: { id: data.projectName },
-    };
+  const selectedProjectId = useWatch({
+    control: controlCreate,
+    name: "projectName",
+  });
 
-    try {
-      setLoading(true);
-      await createUser(userData);
+  //  Formulário de edição
+  const {
+    control: controlEdit,
+    handleSubmit: handleEdit,
+    reset: resetEdit,
+    formState: { errors: errorsEdit },
+  } = useForm<FormValues>({
+    defaultValues: {},
+    shouldUnregister: true,
+  });
 
-      setAlert({
-        show: true,
-        category: "success",
-        title: "Usuário cadastrado com sucesso!",
-      });
+  useEffect(() => {
+    loadUsers();
+  }, []);
 
-      reset(); // limpa o formulário após sucesso
-    } catch (error: any) {
-      const errorMsg = error.message || "Erro desconhecido";
-
-      setAlert({
-        show: true,
-        category: "error",
-        title: `Erro: ${errorMsg}`,
-      });
-
-      if (
-        errorMsg.includes("não autorizado") ||
-        errorMsg.includes("não tem permissão")
-      ) {
-        // Ação automática se não autorizado
-        logout();
-        // Talvez redirecionar para login:
-        // router.push('/login');
-      }
-    } finally {
-      setLoading(false);
-    }
-  }
-
-   useEffect(() => {
+  useEffect(() => {
     async function loadProjects() {
       try {
         const data = await fetchProjects();
@@ -187,15 +139,15 @@ export default function Register() {
   }, []);
 
   useEffect(() => {
-    if (selectedProjectId) {
-      const selected = projects.find((p) => p.id === selectedProjectId);
-      if (selected) {
-        setValue("projectLogoUrl", selected.logoUrl);
-        setValue("dashUrl", selected.dashUrl);
-        setValue("corHex", selected.corHex);
-      }
+    const selectedProject = projects.find(
+      (proj) => proj.id === Number(selectedProjectId)
+    );
+    if (selectedProject?.logoUrl) {
+      setValueCreate("projectLogoUrl", selectedProject.logoUrl);
+    } else {
+      setValueCreate("projectLogoUrl", "");
     }
-  }, [selectedProjectId, projects, setValue]);
+  }, [selectedProjectId, projects, setValueCreate]);
 
   useEffect(() => {
     if (alert.show) {
@@ -204,9 +156,87 @@ export default function Register() {
     }
   }, [alert.show]);
 
+  async function loadUsers() {
+    try {
+      const data = await fetchUsers();
+      if (Array.isArray(data)) setUsers(data);
+    } catch (error) {
+      console.error("Erro ao buscar usuários:", error);
+    }
+  }
+
+  function changeForEdit(user: User) {
+    resetEdit({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      profession: user.profession,
+      role: user.role,
+    });
+    setIsEditing(true);
+  }
+
+  async function onSubmitCreate(data: any) {
+    const userData = {
+      email: data.email,
+      password: data.password,
+      name: data.name,
+      role: data.role,
+      profession: data.profession,
+      projeto: { id: data.projectName },
+    };
+
+    try {
+      setLoading(true);
+      await createUser(userData);
+      setAlert({
+        show: true,
+        category: "success",
+        title: "Usuário cadastrado com sucesso!",
+      });
+      resetCreate();
+      await loadUsers();
+    } catch (error: any) {
+      const errorMsg = error.message || "Erro desconhecido";
+      setAlert({
+        show: true,
+        category: "error",
+        title: `Erro: ${errorMsg}`,
+      });
+      if (
+        errorMsg.includes("não autorizado") ||
+        errorMsg.includes("não tem permissão")
+      ) {
+        logout();
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function onSubmiteUpdate(data: any) {
+    try {
+      setLoading(true);
+      await updateUser({ id: data.id, ...data });
+      setAlert({
+        show: true,
+        category: "success",
+        title: "Usuário atualizado com sucesso!",
+      });
+      await loadUsers();
+      resetEdit();
+      setIsEditing(false);
+    } catch (err: any) {
+      const msg = err.message || "Erro ao atualizar usuário";
+      setAlert({ show: true, category: "error", title: msg });
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
-    <Layout titulo="Tela de cadastro">
-      {/*Componente de alert */}
+    <Layout>
+      {/* Alerta de feedback */}
       {alert.show && alert.title && (
         <CustomAlert
           category={alert.category}
@@ -214,85 +244,138 @@ export default function Register() {
           onClose={() => setAlert({ show: false })}
         />
       )}
-      {/* Modal de cadastro */}
-      <Dialog open={openModal} onClose={() => setOpenModal(false)} maxWidth="sm" fullWidth>
-        <DialogTitle>Cadastrar novo projeto</DialogTitle>
-        <DialogContent dividers>
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            <TextField
-              label="Nome do Projeto"
-              value={newProjectName}
-              onChange={(e) => setNewProjectName(e.target.value)}
-              required
-            />
-            <TextField
-              label="URL da Logo"
-              value={newProjectLogo}
-              onChange={(e) => setNewProjectLogo(e.target.value)}
-              required
-            />
-            <TextField
-              label="URL do Dash"
-              value={newProjectDashUrl}
-              onChange={(e) => setNewProjectDashUrl(e.target.value)}
-              required
-            />
-            <TextField
-              label="Cor padrão do Projeto"
-              type="color"
-              value={newProjectCorHex}
-              onChange={(e) => setNewProjectCorHex(e.target.value)}
-              InputLabelProps={{ shrink: true }}
-              fullWidth
-            />
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenModal(false)}>Cancelar</Button>
-          <Button variant="contained" onClick={handleCreateProject}>
-            Cadastrar
-          </Button>
-        </DialogActions>
-      </Dialog>
 
-      <form onSubmit={handleSubmit(onSubmit)} className={styles.container}>
-        <Box sx={{ mt: 2, textAlign: "center" }} className={styles.buttonContainer} >
-          <Button onClick={() => setOpenModal(true)} className={styles.buttonContent}>
-            Cadastrar novo projeto
-          </Button>
-        </Box>
+      {/* modal de delete de usuário */}
+      {userToDelete && (
+        <ModalUserDelete
+          openModal={openDeleteModal}
+          setOpenModal={setOpenDeleteModal}
+          idUser={userToDelete.id} // correto
+          onDeleted={async () => {
+            setAlert({
+              show: true,
+              category: "success",
+              title: "Usuário deletado com sucesso!",
+            });
+            setUserToDelete(null);
+            setOpenDeleteModal(false); // ⬅ fechar o modal aqui
+            await loadUsers();
+          }}
+        />
+      )}
+
+      <Box sx={{ m: 3 }}>
+        {isEditing && (
+          <Grid container justifyContent="center" sx={{ mt: 2 }}>
+            <Grid item>
+              <button
+                className={styles.buttomEdiction}
+                onClick={() => {
+                  resetEdit();
+                  setIsEditing(false);
+                }}
+              >
+                Cancelar Edição
+              </button>
+            </Grid>
+          </Grid>
+        )}
+
         <Card sx={{ p: 3 }}>
-          {/* Título: Dados do Usuário */}
-          <Typography
-            variant="h6"
-            fontWeight="bold"
-            sx={{ mb: 2, textAlign: "center" }}
-          >
-            Dados do Usuário
-          </Typography>
-          <Forms inputsList={userInputs} control={control} errors={errors} />
-          {/* Título: Dados do Projeto */}
-          <Typography
-            variant="h6"
-            fontWeight="bold"
-            sx={{ mt: 4, mb: 2, textAlign: "center" }}
-          >
-            Dados do Projeto
-          </Typography>
-          <Forms inputsList={projectInputs} control={control} errors={errors} />
+          {!isEditing ? (
+            // Cadastro
+            <form
+              onSubmit={handleCreate(onSubmitCreate)}
+              className={styles.container}
+            >
+              <Typography
+                variant="h6"
+                fontWeight="bold"
+                sx={{ mb: 2, textAlign: "center" }}
+              >
+                Cadastrar Usuário
+              </Typography>
+              <Forms
+                inputsList={userInputs}
+                control={controlCreate}
+                errors={errorsCreate}
+              />
 
-          {/* Botão de submit (você pode estilizar melhor com MUI/Button) */}
-          <Box sx={{ mt: 4 }} className={styles.bottomContainer}>
-            <button type="submit" disabled={loading} className={styles.buttom}>
-              {loading ? (
-                <CircularProgress size={24} sx={{ color: "white" }} />
-              ) : (
-                "Cadastrar"
-              )}
-            </button>
-          </Box>
+              <Typography
+                variant="h6"
+                fontWeight="bold"
+                sx={{ mt: 4, mb: 2, textAlign: "center" }}
+              >
+                Dados do Projeto
+              </Typography>
+              <Forms
+                inputsList={projectInputs}
+                control={controlCreate}
+                errors={errorsCreate}
+              />
+              <Box sx={{ mt: 4 }} className={styles.bottomContainer}>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className={styles.buttom}
+                >
+                  {loading ? (
+                    <CircularProgress size={24} sx={{ color: "white" }} />
+                  ) : (
+                    "Cadastrar"
+                  )}
+                </button>
+              </Box>
+            </form>
+          ) : (
+            //  Edição
+            <form
+              onSubmit={handleEdit(onSubmiteUpdate)}
+              className={styles.container}
+            >
+              <Typography
+                variant="h6"
+                fontWeight="bold"
+                sx={{ mb: 2, textAlign: "center" }}
+              >
+                Atualizar Usuário
+              </Typography>
+              <Forms
+                inputsList={userInputsUpdate}
+                control={controlEdit}
+                errors={errorsEdit}
+              />
+              <Grid container justifyContent="center" sx={{ mt: 4 }}>
+                <Grid item xs={12} sm={6} md={4} lg={3}>
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className={styles.buttom}
+                  >
+                    {loading ? (
+                      <CircularProgress size={24} sx={{ color: "white" }} />
+                    ) : (
+                      "Atualizar"
+                    )}
+                  </button>
+                </Grid>
+              </Grid>
+            </form>
+          )}
         </Card>
-      </form>
+      </Box>
+
+      {/* Tabela */}
+      <Box sx={{ p: 3 }}>
+        <Card sx={{ mb: 5, mt: 0 }}>
+          <GenericDataTable
+            rows={users}
+            columns={columnsUsers}
+            onEdit={handleEditUser}
+            onDelete={handleDeleteUser}
+          />
+        </Card>
+      </Box>
     </Layout>
   );
 }

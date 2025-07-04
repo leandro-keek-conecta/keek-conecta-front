@@ -1,6 +1,6 @@
 import User from "./IUserType";
 
-export default interface City {
+export default interface Projeto {
   id: number;
   name: string;
   state: string;

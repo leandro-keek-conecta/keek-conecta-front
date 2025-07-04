@@ -6,11 +6,12 @@ import NotFound from "../pages/NotFound";
 import Home from "../pages/home/Home";
 import Login from "@/pages/login/Login";
 import { SuperAdmin } from '@/pages/superAdmin';
-import Register from '@/pages/register';
 import Projects from '@/pages/projects';
 import ProjectAcess from '@/pages/projectAcess';
 import Metricas from '@/pages/metricas';
 import Estatisticas from '@/pages/estatistica';
+import ProjectRegister from '@/pages/projectRegister';
+import Register from '@/pages/register';
 
 
 const RoutesConfig = () => (
@@ -31,6 +32,8 @@ const RoutesConfig = () => (
       <Route path="/cadastro" element={<ProtectedRoute allowedRoles={["ADMIN"]}><Register /></ProtectedRoute>} />
       <Route path="/projetos" element={<ProtectedRoute allowedRoles={["ADMIN"]}><Projects /></ProtectedRoute>} />
       <Route path="/projeto/:id" element={<ProtectedRoute allowedRoles={["ADMIN"]}><ProjectAcess /></ProtectedRoute>} />
+      <Route path="/cadastro-projeto" element={<ProtectedRoute allowedRoles={["ADMIN"]}><ProjectRegister /></ProtectedRoute>} />
+     
 
       {/* Rota para NotFound */}
       <Route path="*" element={<NotFound />} />
