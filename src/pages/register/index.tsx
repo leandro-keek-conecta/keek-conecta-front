@@ -159,7 +159,11 @@ export default function Register() {
   async function loadUsers() {
     try {
       const data = await fetchUsers();
-      if (Array.isArray(data)) setUsers(data);
+      const usersWithProject = data.map((item) => ({
+        ...item,
+        projectName: item.projeto?.name ?? "", // Evita erro se "projeto" for null
+      }));
+      setUsers(usersWithProject);
     } catch (error) {
       console.error("Erro ao buscar usuários:", error);
     }
@@ -235,7 +239,7 @@ export default function Register() {
   }
 
   return (
-    <Layout>
+    <Layout titulo="Tela de Usuários">
       {/* Alerta de feedback */}
       {alert.show && alert.title && (
         <CustomAlert
@@ -346,17 +350,17 @@ export default function Register() {
                 errors={errorsEdit}
               />
               <Box sx={{ mt: 4 }} className={styles.bottomContainer}>
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className={styles.buttom}
-                  >
-                    {loading ? (
-                      <CircularProgress size={24} sx={{ color: "white" }} />
-                    ) : (
-                      "Atualizar"
-                    )}
-                  </button>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className={styles.buttom}
+                >
+                  {loading ? (
+                    <CircularProgress size={24} sx={{ color: "white" }} />
+                  ) : (
+                    "Atualizar"
+                  )}
+                </button>
               </Box>
             </form>
           )}
