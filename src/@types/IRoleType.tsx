@@ -1,3 +1,4 @@
-export default interface Role {
-  role: 'USER' | 'ADMIN' ;
+export enum Role {
+  ADMIN = 'ADMIN',
+  USER = 'USER',
 }

@@ -1,5 +1,5 @@
 import Projeto from "./IProjetoType";
-import Role from "./IRoleType";
+import {Role} from "./IRoleType";
 
 export default interface User {
   id?: number;
