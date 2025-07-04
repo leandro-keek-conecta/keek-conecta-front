@@ -57,13 +57,11 @@ export async function deleteUser(id:number){
 
 export async function fetchUsers(): Promise<User[]> {
   const response = await api.get("/user/list");
-  console.log(response)
   return response.data.data; // ← acessa corretamente o array de projetos
 }
 
 export async function updateUser(data: UpdateUserDTO): Promise<User[]> {
   const response = await api.patch("/user/update", data);
-  console.log(response)
   return response.data.data; // ← acessa corretamente o array de projetos
 }
 

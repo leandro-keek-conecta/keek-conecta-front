@@ -47,8 +47,6 @@ export function Layout({
     .filter(palavra => palavra.length > 2)  // Remove palavras com 2 caracteres ou menos
     .slice(0, 2)                   // Limita o resultado para até 3 palavras
     .join(" ");                    // Junta as palavras novamente
-
-  console.log(userNameFiltered);
   const color = user.projeto.corHex
   // Se não deve mostrar a sidebar, renderiza apenas o conteúdo principal
   if (!mostrarSidebar) {

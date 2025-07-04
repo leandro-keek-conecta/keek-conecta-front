@@ -159,8 +159,6 @@ export default function Register() {
   async function loadUsers() {
     try {
       const data = await fetchUsers();
-      console.log(data.map((item) => item));
-      console.log(data);
       if (Array.isArray(data)) setUsers(data);
     } catch (error) {
       console.error("Erro ao buscar usuários:", error);
