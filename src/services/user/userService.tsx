@@ -1,4 +1,7 @@
+import User from "@/@types/IUserType";
 import { api } from "../api/api";
+import { Update } from "vite/types/hmrPayload.js";
+import { UpdateUserDTO } from "@/@types/IUpdateUserDTO";
 
 interface CreateUserParams {
   email: string;
@@ -46,3 +49,21 @@ export async function createUser(userData: CreateUserParams): Promise<ApiRespons
     throw new Error(message);
   }
 }
+
+export async function deleteUser(id:number){
+  const response= await api.delete(`/user/delete/${id}`);
+  return response;
+}
+
+export async function fetchUsers(): Promise<User[]> {
+  const response = await api.get("/user/list");
+  console.log(response)
+  return response.data.data; // ← acessa corretamente o array de projetos
+}
+
+export async function updateUser(data: UpdateUserDTO): Promise<User[]> {
+  const response = await api.patch("/user/update", data);
+  console.log(response)
+  return response.data.data; // ← acessa corretamente o array de projetos
+}
+

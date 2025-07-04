@@ -148,7 +148,7 @@ export function GenericDataTable({
         field: "actions",
         headerName: "Ações",
         sortable: false,
-        renderCell: (params: GridRenderCellParams) => (
+         renderCell: (params: GridRenderCellParams) => (
           <ActionMenuCell
             row={params.row}
             onEdit={onEdit}
@@ -178,7 +178,7 @@ export function GenericDataTable({
         rows={rows}
         columns={enhancedColumns}
         initialState={{
-          pagination: { paginationModel: { page: 0, pageSize: 8 } },
+          pagination: { paginationModel: { page: 0, pageSize: 5 } },
         }}
         pageSizeOptions={[5, 10]}
         rowHeight={rowHeight}

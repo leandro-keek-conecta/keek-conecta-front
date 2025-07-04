@@ -27,14 +27,10 @@ export default function ProjectRegister() {
   } = useForm();
   const [loading, setLoading] = useState(false);
   const [projects, setProjects] = useState<ProjectDTO[]>([]);
-  const [projectSelected, setProjectSelected] = useState<ProjectDTO | null>(
-    null
-  );
+  const [projectSelected, setProjectSelected] = useState<ProjectDTO | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
-  const [projectToDelete, setProjectToDelete] = useState<ProjectDTO | null>(
-    null
-  );
+  const [projectToDelete, setProjectToDelete] = useState<ProjectDTO | null>(null);
   const [alert, setAlert] = useState<{
     show: boolean;
     category?: "success" | "error" | "info" | "warning";
