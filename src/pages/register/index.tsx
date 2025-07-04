@@ -266,7 +266,7 @@ export default function Register() {
 
       <Box sx={{ m: 3 }}>
         {isEditing && (
-          <Grid container justifyContent="center" sx={{ mt: 2 }}>
+          <Grid container justifyContent="left" sx={{ mt: 2 }}>
             <Grid item>
               <button
                 className={styles.buttomEdiction}
@@ -345,8 +345,7 @@ export default function Register() {
                 control={controlEdit}
                 errors={errorsEdit}
               />
-              <Grid container justifyContent="center" sx={{ mt: 4 }}>
-                <Grid item xs={12} sm={6} md={4} lg={3}>
+              <Box sx={{ mt: 4 }} className={styles.bottomContainer}>
                   <button
                     type="submit"
                     disabled={loading}
@@ -358,8 +357,7 @@ export default function Register() {
                       "Atualizar"
                     )}
                   </button>
-                </Grid>
-              </Grid>
+              </Box>
             </form>
           )}
         </Card>
