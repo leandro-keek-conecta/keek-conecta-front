@@ -10,7 +10,7 @@ import {
 import { FormControl, Box } from "@mui/material";
 import SettingsIcon from "@mui/icons-material/Settings";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import ArticleIcon from '@mui/icons-material/Article';
+import ArticleIcon from "@mui/icons-material/Article";
 import MenuItem from "@mui/material/MenuItem";
 import styles from "./sidebar.module.css";
 import React, { useEffect, useState } from "react";
@@ -31,7 +31,7 @@ export function Sidebar({
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
   const [tela, setTela] = useState("");
-  const isAdminOrMore = user?.role === "ADMIN"? true: false;
+  const isAdminOrMore = user?.role === "ADMIN" ? true : false;
 
   useEffect(() => {
     const root = document.getElementById("main-container");
@@ -45,10 +45,14 @@ export function Sidebar({
 
   const handleChange = (event) => {
     const valor = event.target.value;
-    setTela(valor);
 
-    // Se estiver usando rotas:
-    navigate(valor); // valor precisa ser o path correspondente
+    if (valor === "/") {
+      logout();
+      return; // não faz navigate, já sai
+    }
+
+    setTela(valor);
+    navigate(valor);
   };
 
   return (
@@ -56,21 +60,14 @@ export function Sidebar({
       <ul className={styles.ulStyle}>
         {isAdminOrMore ? (
           <>
-          <ItemMenu
-            icone={<ArticleIcon />}
-            rotulo="Projetos"
-            para="/projetos"
-            estaAberta={estaAberta}
-            onClick={isMobile ? aoFechar : undefined}
-          />
-          <ItemMenu
-          icone={<Description  />}
-          rotulo="Cadastro de usuários"
-          para="/cadastro"
-          estaAberta={estaAberta}
-          onClick={isMobile ? aoFechar : undefined}
-        />
-        </>
+            <ItemMenu
+              icone={<ArticleIcon />}
+              rotulo="Projetos"
+              para="/projetos"
+              estaAberta={estaAberta}
+              onClick={isMobile ? aoFechar : undefined}
+            />
+          </>
         ) : (
           <ItemMenu
             icone={<ArticleIcon />}
@@ -124,27 +121,27 @@ export function Sidebar({
 
                 // Exibir o label normal do MenuItem selecionado
                 const selectedOption = {
-                  /*"/admin/opcoes": "Opções Administrador", "/cadastro": "Tela de cadatro",*/
-
+                  "/cadastro": "Cadastro de Usuário",
+                  "/cadastro-projeto": "Cadastro de Projeto",
                   "/": "Sair",
                 };
 
                 return selectedOption[selected] || "Configurações";
               }}
             >
-              {/*               <MenuItem value="/admin/opcoes" sx={{ fontSize: "1rem" }}>
-                Opções Administrador
-              </MenuItem> 
-                         {isAdminOrMore?(
-                <MenuItem value="/cadastro" sx={{ fontSize: "1rem" }}>
-                Tela de Cadastro
-              </MenuItem>
-              ):(
+              {isAdminOrMore ? (
+                <>
+                  <MenuItem value="/cadastro" sx={{ fontSize: "1rem" }} onClick={()=>navigate("/cadastro")}>
+                    Cadastro de Usuário
+                  </MenuItem>
+                  <MenuItem value="/cadastro-projeto" sx={{ fontSize: "1rem" }} onClick={()=>navigate("/cadastro-projeto")}>
+                    Cadastro de Projeto
+                  </MenuItem>
+                </>
+              ) : (
                 <></>
               )}
-              
-              */}
-   
+
               <MenuItem value="/" sx={{ fontSize: "1rem" }} onClick={logout}>
                 Sair
               </MenuItem>
