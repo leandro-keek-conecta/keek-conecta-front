@@ -5,7 +5,6 @@ import { AuthProvider } from "@/context/AuthContext";
 import NotFound from "../pages/NotFound";
 import Home from "../pages/home/Home";
 import Login from "@/pages/login/Login";
-import { SuperAdmin } from '@/pages/superAdmin';
 import Projects from '@/pages/projects';
 import ProjectAcess from '@/pages/projectAcess';
 import Metricas from '@/pages/metricas';
@@ -28,7 +27,6 @@ const RoutesConfig = () => (
       <Route path="/estatisticas" element={<ProtectedRoute allowedRoles={["USER", "ADMIN"]}><Estatisticas /></ProtectedRoute>} />
 
       {/* Admin, superAdmin */}
-      <Route path="/superAdmin" element={<ProtectedRoute allowedRoles={["ADMIN"]}><SuperAdmin /></ProtectedRoute>} />
       <Route path="/cadastro" element={<ProtectedRoute allowedRoles={["ADMIN"]}><Register /></ProtectedRoute>} />
       <Route path="/projetos" element={<ProtectedRoute allowedRoles={["ADMIN"]}><Projects /></ProtectedRoute>} />
       <Route path="/projeto/:id" element={<ProtectedRoute allowedRoles={["ADMIN"]}><ProjectAcess /></ProtectedRoute>} />

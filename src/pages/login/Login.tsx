@@ -88,15 +88,15 @@ export default function Login() {
         if (userRole.role === "USER") {
           setTimeout(() => {
             navigate("/home");
-          }, 3000);
+          }, 1000);
         } else if (userRole.role === "ADMIN") {
           setTimeout(() => {
             navigate("/projetos");
-          }, 3000);
+          }, 1000);
         } else if (userRole.role === "SUPERADMIN") {
           setTimeout(() => {
             navigate("/projetos");
-          }, 3000);
+          }, 1000);
         }
       }
     } catch (error) {
