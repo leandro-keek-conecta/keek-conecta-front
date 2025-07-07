@@ -142,7 +142,10 @@ export function Sidebar({
                 <></>
               )}
 
-              <MenuItem value="/" sx={{ fontSize: "1rem" }} onClick={logout}>
+              <MenuItem value="/" sx={{ fontSize: "1rem" }} onClick={()=>{
+                logout
+                navigate("/")
+              }}>
                 Sair
               </MenuItem>
             </Select>
