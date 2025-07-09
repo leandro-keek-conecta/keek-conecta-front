@@ -134,10 +134,22 @@ export const cmjpTheme = createTheme({
   },
 });
 
+export const padPbTheme = createTheme({
+  palette: {
+    primary: {
+      main: "#67d567",
+    },
+    background: {
+      default: "#e8f5e9",
+    },
+  },
+});
+
 export const themeMap: Record<string, ReturnType<typeof createTheme>> = {
   "/bayeux": bayeuxTheme,
   "/guga-pet": gugaPetTheme,
   "/conecta-cmjp": cmjpTheme,
+  "/pad-pb": padPbTheme,
 };
 
 export const tema = defaultTheme;

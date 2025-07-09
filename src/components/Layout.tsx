@@ -42,6 +42,7 @@ export function Layout({
   const [barraLateralAberta, setBarraLateralAberta] = useState(true);
   const [menuMobileAberto, setMenuMobileAberto] = useState(false);
   const user = JSON.parse(localStorage.getItem("user"));
+  console.log(user.projeto.url)
   const userNameFiltered = user.name
     .split(" ")                    // Divide o nome completo por espaços
     .filter(palavra => palavra.length > 2)  // Remove palavras com 2 caracteres ou menos
@@ -110,7 +111,7 @@ export function Layout({
             />
           ) : (
             <img
-              src={user.projeto.logoUrl ? user.projeto.logoUrl : Logo}
+              src={user.projeto.url ? user.projeto.url : Logo}
               alt="keekInteligencia"
               style={{ height: "42px", width: "42px", borderRadius: "50%" }}
             />

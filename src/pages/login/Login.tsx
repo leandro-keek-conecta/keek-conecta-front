@@ -5,6 +5,7 @@ import logoBayeux from "@/assets/bayeux-white.png";
 import logoDefault from "@/assets/logo-padrao.png";
 import gugaPet from "@/assets/guga-pet.png";
 import cmjp from "@/assets/CMJP-PB.png";
+import padPb from "@/assets/padPb.png";
 import { ThemeProvider } from "@mui/material/styles";
 import { themeMap, tema } from "../../theme.tsx"; // Nome correto
 
@@ -33,16 +34,18 @@ export default function Login() {
   const { setUser } = useAuth();
   const [loading, setLoading] = useState(false);
   const { pathname } = useLocation();
-    const { updateThemeColor } = useDynamicTheme();
+  const { updateThemeColor } = useDynamicTheme();
 
   const logoMap: Record<string, string> = {
     "/bayeux": logoBayeux,
     "/guga-pet": gugaPet,
     "/conecta-cmjp": cmjp,
+    "/pad-pb": padPb,
   };
 
   const logoSrc = logoMap[pathname.toLowerCase()] || logoDefault;
   const temaAtual = themeMap[pathname.toLowerCase()] || tema;
+  const whiteColor = pathname === "/pad-pb" ? "white" : "black";
 
   useEffect(() => {
     localStorage.clear();
@@ -235,7 +238,7 @@ export default function Login() {
               {loading ? (
                 <CircularProgress size={24} sx={{ color: "white" }} />
               ) : (
-                <p>Enviar</p>
+                <p style={{ color: `${whiteColor}` }}>Enviar</p>
               )}
             </Button>
           </form>
