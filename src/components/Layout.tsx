@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { styled } from "@mui/material/styles";
+import styles from "./layout.module.css"
 import Logo from "../assets/logo.png";
 import {
   AppBar,
@@ -99,38 +100,39 @@ export function Layout({
             display: "flex",
             alignItems: "center",
             backgroundColor: `${color}`,
-            height: "15vh",
+            height: "10vh",
             px: 2,
+            mb:1
           }}
         >
           {user.id === 1 ? (
             <img
               src={Logo}
               alt="keekInteligencia"
-              style={{ height: "42px", width: "42px", borderRadius: "50%" }}
+              style={{ height: "48px", width: "48px", borderRadius: "50%", border: "3px solid #FFF"
+
+ }}
             />
           ) : (
             <img
               src={user.projeto.url ? user.projeto.url : Logo}
               alt="keekInteligencia"
-              style={{ height: "42px", width: "42px", borderRadius: "50%" }}
+              style={{ height: "48px", width: "48px", borderRadius: "50%", border: "3px solid #FFF" }}
             />
           )}
 
           {barraLateralAberta && (
-            <Box sx={{ ml: 1.5, display: "flex", flexDirection: "column" }}>
-              <Typography
-                variant="subtitle1"
-                sx={{ fontWeight: "bold", color: "white", fontSize: "1.5rem" }}
+            <Box className={styles.headerText} >
+              <h1
+              className={styles.title}
               >
                 {user.projeto.nome}
-              </Typography>
-              <Typography
-                variant="body2"
-                sx={{ color: "white", fontWeight: 700, fontSize: "1rem" }}
+              </h1>
+              <h2
+              className={styles.subtitle}
               >
                 {userNameFiltered}
-              </Typography>
+              </h2>
             </Box>
           )}
         </Box>
